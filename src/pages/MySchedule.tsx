@@ -752,8 +752,8 @@ function Dashboard() {
           {/* Sidebar — upcoming bookings */}
           <div className="xl:col-span-1">
             {/* Day summary */}
-            <div className="bg-white rounded-xl shadow-sm p-5 mb-4">
-              <h3 className="font-bold text-primary mb-3 flex items-center gap-2">
+            <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
+              <h3 className="font-bold text-primary mb-4 flex items-center gap-2">
                 <Calendar size={16} className="text-secondary" />
                 Today
               </h3>
@@ -786,23 +786,23 @@ function Dashboard() {
             </div>
 
             {/* Upcoming */}
-            <div className="bg-white rounded-xl shadow-sm p-5">
-              <h3 className="font-bold text-primary mb-4 flex items-center gap-2">
+            <div className="bg-white rounded-xl shadow-sm p-6">
+              <h3 className="font-bold text-primary mb-5 flex items-center gap-2">
                 <Users size={16} className="text-secondary" />
                 Upcoming Bookings
               </h3>
               {upcomingBookings.length === 0 ? (
                 <p className="text-gray-400 text-sm">No upcoming bookings</p>
               ) : (
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {upcomingBookings.map((b) => (
                     <button
                       key={b.id}
                       onClick={() => setSelectedBooking(b)}
-                      className="w-full text-left p-3 rounded-lg border border-gray-100 hover:border-secondary/30 hover:bg-secondary/5 transition-colors"
+                      className="w-full text-left p-4 rounded-xl border border-gray-100 hover:border-secondary/30 hover:bg-secondary/5 transition-colors"
                     >
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="w-2 h-2 rounded-full" style={{ backgroundColor: LESSON_COLORS[b.lessonType] }} />
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: LESSON_COLORS[b.lessonType] }} />
                         <span className="font-semibold text-primary text-sm truncate">{b.studentName}</span>
                       </div>
                       <div className="flex items-center gap-3 text-xs text-gray-500">
