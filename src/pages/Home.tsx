@@ -55,11 +55,11 @@ const QUOTES = [
   { text: "I went from being scared of roundabouts to loving the open road", color: 'bg-orange' },
 ]
 
-const COURSE_CARD_GRADIENTS = [
-  'from-[#1a2a6c] to-[#2d3a8c]',
-  'from-[#c97b3d] to-[#e8a854]',
-  'from-[#2a8c7a] to-[#3bbfa0]',
-  'from-[#c94070] to-[#e86090]',
+const COURSE_CARD_IMAGES = [
+  '/images/course-1.jpg',
+  '/images/course-2.jpg',
+  '/images/course-3.jpg',
+  '/images/course-4.jpg',
 ]
 
 function Home() {
@@ -236,12 +236,11 @@ function Home() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {COURSES.slice(0, 4).map((course, idx) => (
               <div key={course.id} className="group cursor-pointer">
-                <div
-                  className={`h-64 rounded-lg bg-gradient-to-br ${COURSE_CARD_GRADIENTS[idx]} flex items-center justify-center mb-4 overflow-hidden`}
-                >
-                  <Car
-                    size={48}
-                    className="text-white/30 group-hover:scale-110 transition-transform"
+                <div className="h-64 rounded-lg mb-4 overflow-hidden">
+                  <img
+                    src={COURSE_CARD_IMAGES[idx]}
+                    alt={course.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
                 <div className="w-10 h-0.5 bg-secondary mb-3" />
