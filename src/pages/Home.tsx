@@ -21,6 +21,7 @@ import {
   Target,
   Map,
   MapPin,
+  MessageCircle,
 } from 'lucide-react'
 import SectionHeading from '../components/shared/SectionHeading'
 import SEO from '../components/shared/SEO'
@@ -100,12 +101,23 @@ function Home() {
               <p className="text-white/80 text-lg md:text-xl max-w-xl mb-10 leading-relaxed">
                 We have more positive reviews than anyone else. We make learning to drive easy and stress free.
               </p>
-              <a
-                href="#how-it-works"
-                className="inline-block border-2 border-secondary text-secondary px-8 py-3 font-semibold uppercase tracking-wider text-sm hover:bg-secondary hover:text-white transition-colors"
-              >
-                How We Help
-              </a>
+              <div className="flex flex-wrap items-center gap-4">
+                <a
+                  href="#how-it-works"
+                  className="inline-block border-2 border-secondary text-secondary px-8 py-3 font-semibold uppercase tracking-wider text-sm hover:bg-secondary hover:text-white transition-colors"
+                >
+                  How We Help
+                </a>
+                <a
+                  href={SITE.whatsapp}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-[#25D366] text-white px-6 py-3 font-semibold text-sm rounded-full hover:bg-[#1ebe57] transition-colors"
+                >
+                  <MessageCircle size={18} />
+                  Talk to us on WhatsApp
+                </a>
+              </div>
             </div>
 
             {/* Right — Apply form (overlapping hero) */}
@@ -128,9 +140,28 @@ function Home() {
                     placeholder="Phone Number*"
                     className="w-full border border-gray-300 rounded px-4 py-3 text-sm focus:outline-none focus:border-secondary transition-colors"
                   />
+                  <select
+                    className="w-full border border-gray-300 rounded px-4 py-3 text-sm focus:outline-none focus:border-secondary transition-colors text-gray-500"
+                    defaultValue=""
+                  >
+                    <option value="" disabled>Select your area*</option>
+                    <option value="N">North London</option>
+                    <option value="S">South London</option>
+                    <option value="E">East London</option>
+                    <option value="W">West London</option>
+                    <option value="C">Central London</option>
+                    <option value="CR">Croydon</option>
+                    <option value="EN">Enfield</option>
+                    <option value="BR">Bromley</option>
+                    <option value="SE">Greenwich / Lewisham</option>
+                    <option value="N1">Islington / Camden</option>
+                    <option value="SW">Wandsworth</option>
+                    <option value="HA">Barnet / Harrow</option>
+                    <option value="other">Other (enter postcode below)</option>
+                  </select>
                   <input
-                    type="url"
-                    placeholder="Website*"
+                    type="text"
+                    placeholder="Or enter your postcode (e.g. SW1A 1AA)"
                     className="w-full border border-gray-300 rounded px-4 py-3 text-sm focus:outline-none focus:border-secondary transition-colors"
                   />
                   <button
