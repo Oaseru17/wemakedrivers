@@ -6,6 +6,7 @@ import Courses from './pages/Courses'
 import Contact from './pages/Contact'
 import Blog from './pages/Blog'
 import BlogPost from './pages/BlogPost'
+import MySchedule from './pages/MySchedule'
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/list" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
+        <Route path="/my-schedule" element={<MySchedule />} />
       </Route>
     </Routes>
   )
