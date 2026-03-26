@@ -9,10 +9,11 @@ function Header() {
   const [scrolled, setScrolled] = useState(false)
   const location = useLocation()
 
+  const isHome = location.pathname === '/'
   const isActive = (path: string) => location.pathname === path
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10)
+    const onScroll = () => setScrolled(window.scrollY > 50)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
@@ -21,19 +22,23 @@ function Header() {
     setMobileOpen(false)
   }, [location.pathname])
 
+  const transparent = isHome && !scrolled
+
   return (
     <header
-      className={`w-full sticky top-0 z-50 bg-white transition-shadow duration-300 ${
-        scrolled ? 'shadow-md' : 'shadow-none'
+      className={`w-full fixed top-0 z-50 transition-all duration-300 ${
+        transparent
+          ? 'bg-transparent shadow-none'
+          : 'bg-white shadow-md'
       }`}
     >
       <nav className="max-w-7xl mx-auto px-6 flex items-center justify-between h-20">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-0.5 shrink-0">
-          <span className="text-2xl font-bold tracking-tight text-dark">
+          <span className={`text-2xl font-bold tracking-tight transition-colors ${transparent ? 'text-white' : 'text-dark'}`}>
             WeMake
           </span>
-          <span className="text-2xl font-bold tracking-tight text-dark relative">
+          <span className={`text-2xl font-bold tracking-tight relative transition-colors ${transparent ? 'text-white' : 'text-dark'}`}>
             Dri
             <span className="relative inline-block">
               v
@@ -69,7 +74,7 @@ function Header() {
                       className={`flex items-center gap-1 uppercase text-[13px] font-medium tracking-[0.08em] py-6 transition-colors ${
                         active
                           ? 'text-secondary'
-                          : 'text-dark hover:text-secondary'
+                          : transparent ? 'text-white/90 hover:text-secondary' : 'text-dark hover:text-secondary'
                       }`}
                     >
                       {link.label}
@@ -104,7 +109,7 @@ function Header() {
                     className={`block uppercase text-[13px] font-medium tracking-[0.08em] py-6 transition-colors ${
                       active
                         ? 'text-secondary'
-                        : 'text-dark hover:text-secondary'
+                        : transparent ? 'text-white/90 hover:text-secondary' : 'text-dark hover:text-secondary'
                     }`}
                   >
                     {link.label}
@@ -119,7 +124,7 @@ function Header() {
         <div className="flex items-center gap-4 shrink-0">
           {/* Search icon */}
           <button
-            className="hidden lg:flex items-center justify-center w-10 h-10 text-dark hover:text-secondary transition-colors"
+            className={`hidden lg:flex items-center justify-center w-10 h-10 hover:text-secondary transition-colors ${transparent ? 'text-white' : 'text-dark'}`}
             aria-label="Search"
           >
             <Search size={20} strokeWidth={2} />
@@ -127,7 +132,7 @@ function Header() {
 
           {/* Hamburger icon — dark rounded square */}
           <button
-            className="flex items-center justify-center w-10 h-10 bg-dark rounded-lg text-white hover:bg-dark/90 transition-colors"
+            className={`flex items-center justify-center w-10 h-10 rounded-lg transition-colors ${transparent ? 'bg-white/20 text-white hover:bg-white/30' : 'bg-dark text-white hover:bg-dark/90'}`}
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >

@@ -5,6 +5,7 @@ import Footer from './Footer'
 
 function Layout() {
   const { pathname } = useLocation()
+  const isHome = pathname === '/'
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -13,7 +14,7 @@ function Layout() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1">
+      <main className={`flex-1 ${isHome ? '' : 'pt-20'}`}>
         <Outlet />
       </main>
       <Footer />

@@ -63,115 +63,111 @@ function Home() {
   return (
     <main>
       {/* Section 1 — Hero */}
-      <section className="relative min-h-[75vh] flex items-center overflow-hidden">
+      <section className="relative min-h-[85vh] flex items-center overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: 'url(/images/hero-bg.jpg)',
           }}
         />
-        <div className="absolute inset-0 bg-black/60" />
+        <div className="absolute inset-0 bg-black/50" />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 w-full py-20">
-          <div className="flex items-center gap-6 mb-10">
-            <button className="text-white text-sm font-semibold tracking-wide pb-1 border-b-2 border-secondary">
-              School
-            </button>
-            <button className="text-white/60 text-sm font-semibold tracking-wide pb-1 border-b-2 border-transparent hover:text-white transition-colors">
-              Drive
-            </button>
-            <button className="text-white/60 text-sm font-semibold tracking-wide pb-1 border-b-2 border-transparent hover:text-white transition-colors">
-              Insurance
-            </button>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 w-full pt-28 pb-20">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-end">
+            {/* Left — Hero text */}
+            <div className="lg:col-span-3">
+              <div className="flex items-center gap-6 mb-10">
+                <button className="text-white text-sm font-semibold tracking-wide pb-1 border-b-2 border-secondary">
+                  School
+                </button>
+                <button className="text-white/60 text-sm font-semibold tracking-wide pb-1 border-b-2 border-transparent hover:text-white transition-colors">
+                  Drive
+                </button>
+                <button className="text-white/60 text-sm font-semibold tracking-wide pb-1 border-b-2 border-transparent hover:text-white transition-colors">
+                  Insurance
+                </button>
+              </div>
+
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6 max-w-2xl">
+                Champion<br />Driving
+              </h1>
+              <p className="text-white/80 text-lg md:text-xl max-w-xl mb-10 leading-relaxed">
+                We have more positive reviews than anyone else. We make learning to drive easy and stress free.
+              </p>
+              <a
+                href="#how-it-works"
+                className="inline-block border-2 border-secondary text-secondary px-8 py-3 font-semibold uppercase tracking-wider text-sm hover:bg-secondary hover:text-white transition-colors"
+              >
+                How We Help
+              </a>
+            </div>
+
+            {/* Right — Apply form (overlapping hero) */}
+            <div className="lg:col-span-2 lg:translate-y-32">
+              <div className="bg-white rounded-lg p-8 shadow-xl">
+                <h3 className="text-xl font-bold text-primary mb-6">Apply Now</h3>
+                <form className="space-y-4">
+                  <input
+                    type="text"
+                    placeholder="Full Name*"
+                    className="w-full border border-gray-300 rounded px-4 py-3 text-sm focus:outline-none focus:border-secondary transition-colors"
+                  />
+                  <input
+                    type="email"
+                    placeholder="hello@drivingschool.com"
+                    className="w-full border border-gray-300 rounded px-4 py-3 text-sm focus:outline-none focus:border-secondary transition-colors"
+                  />
+                  <input
+                    type="tel"
+                    placeholder="Phone Number*"
+                    className="w-full border border-gray-300 rounded px-4 py-3 text-sm focus:outline-none focus:border-secondary transition-colors"
+                  />
+                  <input
+                    type="url"
+                    placeholder="Website*"
+                    className="w-full border border-gray-300 rounded px-4 py-3 text-sm focus:outline-none focus:border-secondary transition-colors"
+                  />
+                  <button
+                    type="submit"
+                    className="w-full bg-primary text-white py-3.5 rounded font-semibold uppercase tracking-wider text-sm hover:bg-accent transition-colors"
+                  >
+                    Apply Now
+                  </button>
+                </form>
+              </div>
+            </div>
           </div>
-
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6 max-w-2xl">
-            Champion<br />Driving
-          </h1>
-          <p className="text-white/80 text-lg md:text-xl max-w-xl mb-10 leading-relaxed">
-            We have more positive reviews than anyone else. We make learning to drive easy and stress free.
-          </p>
-          <a
-            href="#how-it-works"
-            className="inline-block border-2 border-secondary text-secondary px-8 py-3 font-semibold uppercase tracking-wider text-sm hover:bg-secondary hover:text-white transition-colors"
-          >
-            How We Help
-          </a>
         </div>
       </section>
 
-      {/* Section 2 — Courses + Apply Form */}
-      <section className="bg-white py-20">
-        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-5 gap-12">
-          <div className="lg:col-span-3">
-            <span className="text-secondary text-sm font-semibold uppercase tracking-wider">
-              Our Courses
-            </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-primary mt-2 mb-4">
-              Driver Safety On The Road
-            </h2>
-            <p className="text-gray-500 leading-relaxed mb-10 max-w-lg">
-              We offer a wide range of driving courses tailored to your needs, whether you're a
-              complete beginner or looking to sharpen your skills.
-            </p>
+      {/* Section 2 — Courses */}
+      <section className="bg-white pt-20 pb-20">
+        <div className="max-w-7xl mx-auto px-4 lg:w-3/5">
+          <span className="text-secondary text-sm font-semibold uppercase tracking-wider">
+            Our Courses
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold text-primary mt-2 mb-4">
+            Driver Safety On The Road
+          </h2>
+          <p className="text-gray-500 leading-relaxed mb-10 max-w-lg">
+            We offer a wide range of driving courses tailored to your needs, whether you're a
+            complete beginner or looking to sharpen your skills.
+          </p>
 
-            <div className="space-y-8">
-              {COURSES.slice(0, 3).map((course) => (
-                <div key={course.id} className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center text-secondary shrink-0 mt-1">
-                    {ICON_MAP[course.icon]}
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-primary text-lg">{course.title}</h3>
-                    <p className="text-gray-500 text-sm leading-relaxed mt-1">
-                      {course.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="lg:col-span-2">
-            <div className="bg-white border border-gray-200 rounded-lg p-8 shadow-sm">
-              <h3 className="text-xl font-bold text-primary mb-6">Apply Now</h3>
-              <form className="space-y-4">
-                <div>
-                  <input
-                    type="text"
-                    placeholder="Full Name"
-                    className="w-full border border-gray-300 rounded px-4 py-3 text-sm focus:outline-none focus:border-secondary transition-colors"
-                  />
+          <div className="space-y-8">
+            {COURSES.slice(0, 3).map((course) => (
+              <div key={course.id} className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center text-secondary shrink-0 mt-1">
+                  {ICON_MAP[course.icon]}
                 </div>
                 <div>
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    className="w-full border border-gray-300 rounded px-4 py-3 text-sm focus:outline-none focus:border-secondary transition-colors"
-                  />
+                  <h3 className="font-bold text-primary text-lg">{course.title}</h3>
+                  <p className="text-gray-500 text-sm leading-relaxed mt-1">
+                    {course.description}
+                  </p>
                 </div>
-                <div>
-                  <input
-                    type="tel"
-                    placeholder="Phone Number"
-                    className="w-full border border-gray-300 rounded px-4 py-3 text-sm focus:outline-none focus:border-secondary transition-colors"
-                  />
-                </div>
-                <div>
-                  <input
-                    type="url"
-                    placeholder="Website"
-                    className="w-full border border-gray-300 rounded px-4 py-3 text-sm focus:outline-none focus:border-secondary transition-colors"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="w-full bg-primary text-white py-3 rounded font-semibold uppercase tracking-wider text-sm hover:bg-accent transition-colors"
-                >
-                  Apply Now
-                </button>
-              </form>
-            </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
