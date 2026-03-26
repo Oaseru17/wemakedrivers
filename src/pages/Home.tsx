@@ -20,6 +20,7 @@ import {
   Users,
   Target,
   Map,
+  MapPin,
 } from 'lucide-react'
 import SectionHeading from '../components/shared/SectionHeading'
 import { SITE, COURSES, TESTIMONIALS, BLOG_POSTS, HOW_IT_WORKS, FEATURES } from '../data/site'
@@ -367,7 +368,74 @@ function Home() {
         </div>
       </section>
 
-      {/* Section 10 — Testimonials */}
+      {/* Section 10 — London Coverage */}
+      <section className="bg-accent py-20 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <span className="text-secondary text-sm font-semibold uppercase tracking-wider">
+                Areas We Cover
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mt-2 mb-4">
+                Driving Lessons Across London
+              </h2>
+              <p className="text-gray-300 leading-relaxed mb-8">
+                Wherever you are in London, we come to you. Our instructors cover all major zones,
+                so you can learn on the roads you'll actually be driving on. Pick-up from home, work, or college.
+              </p>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8">
+                {[
+                  'North London', 'South London', 'East London',
+                  'West London', 'Central London', 'Croydon',
+                  'Barnet', 'Enfield', 'Bromley',
+                  'Greenwich', 'Hackney', 'Lewisham',
+                  'Islington', 'Camden', 'Wandsworth',
+                ].map((area) => (
+                  <div
+                    key={area}
+                    className="flex items-center gap-2 bg-white/10 rounded-lg px-3 py-2 text-sm text-white/90"
+                  >
+                    <MapPin size={14} className="text-secondary shrink-0" />
+                    {area}
+                  </div>
+                ))}
+              </div>
+
+              <p className="text-gray-400 text-sm">
+                Don't see your area? <a href="/contact-us" className="text-secondary hover:underline">Get in touch</a> — we likely cover it.
+              </p>
+            </div>
+
+            <div className="relative">
+              <div className="w-full aspect-square max-w-md mx-auto relative">
+                {/* Stylized map visualization */}
+                <div className="absolute inset-0 rounded-full border-2 border-secondary/30" />
+                <div className="absolute inset-6 rounded-full border border-secondary/20" />
+                <div className="absolute inset-12 rounded-full border border-secondary/15" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center">
+                    <Map size={48} className="text-secondary mx-auto mb-3" />
+                    <p className="text-white font-bold text-xl">London</p>
+                    <p className="text-gray-400 text-sm">All Zones Covered</p>
+                  </div>
+                </div>
+                {/* Pins around the circle */}
+                <div className="absolute top-4 left-1/2 -translate-x-1/2"><MapPin size={18} className="text-secondary" /></div>
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2"><MapPin size={18} className="text-secondary" /></div>
+                <div className="absolute left-4 top-1/2 -translate-y-1/2"><MapPin size={18} className="text-secondary" /></div>
+                <div className="absolute right-4 top-1/2 -translate-y-1/2"><MapPin size={18} className="text-secondary" /></div>
+                <div className="absolute top-16 left-16"><MapPin size={16} className="text-secondary/70" /></div>
+                <div className="absolute top-16 right-16"><MapPin size={16} className="text-secondary/70" /></div>
+                <div className="absolute bottom-16 left-16"><MapPin size={16} className="text-secondary/70" /></div>
+                <div className="absolute bottom-16 right-16"><MapPin size={16} className="text-secondary/70" /></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 11 — Testimonials */}
       <section className="bg-light py-20">
         <div className="max-w-7xl mx-auto px-4">
           <SectionHeading
