@@ -358,10 +358,12 @@ function Home() {
       <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="w-full h-96 rounded-2xl bg-gradient-to-br from-secondary/20 via-light to-accent/10 flex items-center justify-center">
-              <div className="w-48 h-48 rounded-full bg-gradient-to-br from-secondary/30 to-accent/30 flex items-center justify-center">
-                <Users size={64} className="text-gray-400" />
-              </div>
+            <div className="w-full h-96 rounded-2xl overflow-hidden">
+              <img
+                src="/images/instructor.jpg"
+                alt="Learner driver swapping L plates for P plates with instructor"
+                className="w-full h-full object-cover"
+              />
             </div>
 
             <div>
