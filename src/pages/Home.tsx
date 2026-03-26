@@ -13,10 +13,8 @@ import {
   ArrowRight,
   Phone,
   Mail,
-  MapPin,
   Star,
   Quote,
-  Clock,
   Shield,
   BookOpen,
   Users,
@@ -24,7 +22,7 @@ import {
   Map,
 } from 'lucide-react'
 import SectionHeading from '../components/shared/SectionHeading'
-import { SITE, COURSES, TESTIMONIALS, BLOG_POSTS, STATS, HOW_IT_WORKS, FEATURES } from '../data/site'
+import { SITE, COURSES, TESTIMONIALS, BLOG_POSTS, HOW_IT_WORKS, FEATURES } from '../data/site'
 
 const ICON_MAP: Record<string, React.ReactNode> = {
   'user-check': <UserCheck size={28} />,
@@ -40,178 +38,192 @@ const ICON_MAP: Record<string, React.ReactNode> = {
 }
 
 const FEATURE_ICONS = [
-  <Clock size={32} />,
-  <Shield size={32} />,
-  <Users size={32} />,
-  <BookOpen size={32} />,
-  <Target size={32} />,
-  <Map size={32} />,
-]
-
-const BORDER_COLORS = [
-  'border-l-secondary',
-  'border-l-accent',
-  'border-l-gold',
-  'border-l-secondary',
+  <Calendar size={32} className="text-secondary" />,
+  <Shield size={32} className="text-secondary" />,
+  <Users size={32} className="text-secondary" />,
+  <BookOpen size={32} className="text-secondary" />,
+  <Target size={32} className="text-secondary" />,
+  <Map size={32} className="text-secondary" />,
 ]
 
 const QUOTES = [
-  { text: 'The road to success is always under construction.', author: 'Lily Tomlin' },
-  { text: 'Life is a journey, enjoy the drive.', author: 'Unknown' },
-  { text: 'Four wheels move the body, confidence moves the soul.', author: 'WeMake Drivers' },
+  { text: 'Like if I drive faster, I could get to the happiness', color: 'bg-teal' },
+  { text: "Good ideas don't require proper planning or schedule", color: 'bg-purple' },
+  { text: 'People who trust themselves to actually follow through', color: 'bg-orange' },
+]
+
+const COURSE_CARD_GRADIENTS = [
+  'from-[#1a2a6c] to-[#2d3a8c]',
+  'from-[#c97b3d] to-[#e8a854]',
+  'from-[#2a8c7a] to-[#3bbfa0]',
+  'from-[#c94070] to-[#e86090]',
 ]
 
 function Home() {
   return (
     <main>
-      {/* Section 1 - Hero */}
-      <section className="bg-gradient-to-r from-primary via-accent to-primary relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 py-20 md:py-32 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="text-white z-10">
-            <div className="flex items-center gap-2 mb-4">
-              <Star size={18} className="text-gold fill-gold" />
-              <span className="text-gold font-semibold">{SITE.rating}/5</span>
-              <span className="text-gray-300">from {SITE.reviewCount}+ positive reviews</span>
-            </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
-              Champion<br />
-              <span className="text-secondary">Driving</span> Starts Here
-            </h1>
-            <p className="text-lg text-gray-300 mb-8 max-w-lg">
-              Stress-free driving lessons with London's most trusted instructors.
-              From nervous beginners to test-ready learners, we help you succeed.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <a
-                href="#how-it-works"
-                className="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-primary transition-colors"
-              >
-                How We Help
-              </a>
-              <Link
-                to="/contact-us"
-                className="bg-secondary text-white px-8 py-3 rounded-full font-semibold hover:bg-secondary/90 transition-colors"
-              >
-                Book Now
-              </Link>
-            </div>
-          </div>
-          <div className="hidden lg:flex justify-center items-center">
-            <div className="w-96 h-80 rounded-2xl bg-gradient-to-br from-secondary/30 via-accent/20 to-gold/20 flex items-center justify-center backdrop-blur-sm border border-white/10">
-              <Car size={120} className="text-white/40" />
-            </div>
-          </div>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white to-transparent" />
-      </section>
+      {/* Section 1 — Hero */}
+      <section className="relative min-h-[75vh] flex items-center overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: 'url(/images/hero-bg.jpg)',
+          }}
+        />
+        <div className="absolute inset-0 bg-black/60" />
 
-      {/* Section 2 - Courses Grid */}
-      <section className="bg-white py-20">
-        <div className="max-w-7xl mx-auto px-4">
-          <SectionHeading
-            subtitle="OUR COURSES"
-            title="Driver Safety On The Road"
-            description="We offer a wide range of driving courses tailored to your needs, whether you're a complete beginner or looking to sharpen your skills."
-            center
-          />
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {COURSES.slice(0, 4).map((course) => (
-              <div
-                key={course.id}
-                className="bg-light rounded-xl p-6 text-center hover:shadow-lg transition-shadow group"
-              >
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-secondary/10 flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-colors">
-                  {ICON_MAP[course.icon]}
-                </div>
-                <h3 className="font-bold text-primary mb-2">{course.title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{course.description}</p>
-              </div>
-            ))}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 w-full py-20">
+          <div className="flex items-center gap-6 mb-10">
+            <button className="text-white text-sm font-semibold tracking-wide pb-1 border-b-2 border-secondary">
+              School
+            </button>
+            <button className="text-white/60 text-sm font-semibold tracking-wide pb-1 border-b-2 border-transparent hover:text-white transition-colors">
+              Drive
+            </button>
+            <button className="text-white/60 text-sm font-semibold tracking-wide pb-1 border-b-2 border-transparent hover:text-white transition-colors">
+              Insurance
+            </button>
           </div>
-        </div>
-      </section>
 
-      {/* Section 3 - Booking CTA */}
-      <section className="bg-secondary py-16">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
-            Book your lessons now
-          </h2>
-          <p className="text-white/80 text-lg mb-8">
-            It's Free and always will be.
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6 max-w-2xl">
+            Champion<br />Driving
+          </h1>
+          <p className="text-white/80 text-lg md:text-xl max-w-xl mb-10 leading-relaxed">
+            We have more positive reviews than anyone else. We make learning to drive easy and stress free.
           </p>
-          <Link
-            to="/contact-us"
-            className="inline-block bg-white text-secondary px-10 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-colors"
+          <a
+            href="#how-it-works"
+            className="inline-block border-2 border-secondary text-secondary px-8 py-3 font-semibold uppercase tracking-wider text-sm hover:bg-secondary hover:text-white transition-colors"
           >
-            Get Started
-          </Link>
+            How We Help
+          </a>
         </div>
       </section>
 
-      {/* Section 4 - Call-to-Action Banner */}
-      <section className="bg-accent py-16">
+      {/* Section 2 — Courses + Apply Form */}
+      <section className="bg-white py-20">
+        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-5 gap-12">
+          <div className="lg:col-span-3">
+            <span className="text-secondary text-sm font-semibold uppercase tracking-wider">
+              Our Courses
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-primary mt-2 mb-4">
+              Driver Safety On The Road
+            </h2>
+            <p className="text-gray-500 leading-relaxed mb-10 max-w-lg">
+              We offer a wide range of driving courses tailored to your needs, whether you're a
+              complete beginner or looking to sharpen your skills.
+            </p>
+
+            <div className="space-y-8">
+              {COURSES.slice(0, 3).map((course) => (
+                <div key={course.id} className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center text-secondary shrink-0 mt-1">
+                    {ICON_MAP[course.icon]}
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-primary text-lg">{course.title}</h3>
+                    <p className="text-gray-500 text-sm leading-relaxed mt-1">
+                      {course.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="lg:col-span-2">
+            <div className="bg-white border border-gray-200 rounded-lg p-8 shadow-sm">
+              <h3 className="text-xl font-bold text-primary mb-6">Apply Now</h3>
+              <form className="space-y-4">
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Full Name"
+                    className="w-full border border-gray-300 rounded px-4 py-3 text-sm focus:outline-none focus:border-secondary transition-colors"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    className="w-full border border-gray-300 rounded px-4 py-3 text-sm focus:outline-none focus:border-secondary transition-colors"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="tel"
+                    placeholder="Phone Number"
+                    className="w-full border border-gray-300 rounded px-4 py-3 text-sm focus:outline-none focus:border-secondary transition-colors"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="url"
+                    placeholder="Website"
+                    className="w-full border border-gray-300 rounded px-4 py-3 text-sm focus:outline-none focus:border-secondary transition-colors"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full bg-primary text-white py-3 rounded font-semibold uppercase tracking-wider text-sm hover:bg-accent transition-colors"
+                >
+                  Apply Now
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 3 — CTA Banner */}
+      <section className="bg-secondary py-14">
         <div className="max-w-7xl mx-auto px-4 flex flex-col lg:flex-row items-center justify-between gap-8">
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
               Start Learning to Drive Today
             </h2>
-            <p className="text-gray-300 text-lg max-w-xl">
-              Whether you're 17 or 70, it's never too late to learn. We help people of all ages
-              become confident, safe drivers on London's roads.
+            <p className="text-white/80 text-lg">
+              It's Free and always will be.
             </p>
           </div>
-          <div className="flex flex-col items-center lg:items-end gap-4 shrink-0">
-            <a href={`tel:${SITE.phone}`} className="flex items-center gap-3 text-white">
-              <Phone size={24} className="text-secondary" />
-              <span className="text-2xl md:text-3xl font-bold">{SITE.phone}</span>
-            </a>
-            <Link
-              to="/contact-us"
-              className="bg-secondary text-white px-8 py-3 rounded-full font-semibold hover:bg-secondary/90 transition-colors"
-            >
-              Book a Lesson
-            </Link>
-          </div>
+          <a
+            href={`tel:${SITE.phone}`}
+            className="flex items-center gap-4 shrink-0"
+          >
+            <Phone size={28} className="text-white" />
+            <span className="text-2xl md:text-3xl font-bold text-white">1-900-333-333</span>
+          </a>
         </div>
       </section>
 
-      {/* Section 5 - Popular Courses */}
-      <section className="bg-light py-20">
+      {/* Section 4 — Popular Courses (4 photo cards) */}
+      <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4">
-          <SectionHeading
-            subtitle="TOP PICKS"
-            title="Popular Courses"
-            description="Our most in-demand courses chosen by thousands of London learners."
-            center
-          />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {COURSES.slice(0, 4).map((course, idx) => (
-              <div
-                key={course.id}
-                className={`bg-white rounded-xl p-6 border-l-4 ${BORDER_COLORS[idx]} flex items-start gap-5 hover:shadow-lg transition-shadow`}
-              >
-                <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
-                  {ICON_MAP[course.icon]}
+              <div key={course.id} className="group cursor-pointer">
+                <div
+                  className={`h-64 rounded-lg bg-gradient-to-br ${COURSE_CARD_GRADIENTS[idx]} flex items-center justify-center mb-4 overflow-hidden`}
+                >
+                  <Car
+                    size={48}
+                    className="text-white/30 group-hover:scale-110 transition-transform"
+                  />
                 </div>
-                <div className="flex-1">
-                  <h3 className="font-bold text-primary text-lg mb-1">{course.title}</h3>
-                  <p className="text-gray-500 text-sm leading-relaxed mb-3">{course.description}</p>
-                  <Link
-                    to="/courses"
-                    className="inline-flex items-center gap-1 text-secondary font-semibold text-sm hover:gap-2 transition-all"
-                  >
-                    Learn More <ArrowRight size={16} />
-                  </Link>
-                </div>
+                <div className="w-10 h-0.5 bg-secondary mb-3" />
+                <h3 className="font-semibold text-primary text-center">{course.title}</h3>
               </div>
             ))}
           </div>
+          <p className="text-center text-gray-500 mt-12 text-lg">
+            Our nearly 4,000 committed staff members are ready to help.
+          </p>
         </div>
       </section>
 
-      {/* Section 6 - How it Works */}
-      <section id="how-it-works" className="bg-white py-20">
+      {/* Section 5 — How it Works */}
+      <section id="how-it-works" className="bg-white py-20 border-t border-gray-100">
         <div className="max-w-7xl mx-auto px-4">
           <SectionHeading
             subtitle="OUR SERVICES"
@@ -219,104 +231,126 @@ function Home() {
             description="Getting on the road is easier than you think. Just three simple steps."
             center
           />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {HOW_IT_WORKS.map((step, idx) => (
-              <div key={step.title} className="text-center relative">
-                <div className="relative inline-block mb-6">
-                  <div className="w-20 h-20 mx-auto rounded-full bg-secondary/10 flex items-center justify-center text-secondary">
-                    {ICON_MAP[step.icon]}
-                  </div>
-                  <span className="absolute -top-2 -right-2 w-8 h-8 bg-secondary text-white rounded-full flex items-center justify-center text-sm font-bold">
-                    {idx + 1}
-                  </span>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            {HOW_IT_WORKS.map((step) => (
+              <div key={step.title} className="text-center">
+                <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-secondary/10 flex items-center justify-center text-secondary">
+                  {ICON_MAP[step.icon]}
                 </div>
                 <h3 className="font-bold text-primary text-xl mb-3">{step.title}</h3>
-                <p className="text-gray-500 leading-relaxed max-w-xs mx-auto">{step.description}</p>
-                {idx < HOW_IT_WORKS.length - 1 && (
-                  <div className="hidden md:block absolute top-10 right-0 translate-x-1/2 w-16 border-t-2 border-dashed border-secondary/30" />
-                )}
+                <p className="text-gray-500 leading-relaxed max-w-xs mx-auto">
+                  {step.description}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Section 7 - Features */}
-      <section className="bg-primary py-20">
+      {/* Section 6 — "A Different Drive Everyday!" (dark section) */}
+      <section className="bg-accent py-20">
         <div className="max-w-7xl mx-auto px-4">
-          <SectionHeading
-            subtitle="WHAT WE DO"
-            title="A Different Drive Everyday!"
-            description="From flexible scheduling to expert instruction, here's what makes WeMake Drivers the top choice in London."
-            center
-            light
-          />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {FEATURES.map((feature, idx) => (
-              <div key={feature.title} className="flex items-start gap-4 group">
-                <div className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center text-secondary shrink-0 group-hover:bg-secondary group-hover:text-white transition-colors">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+            <div>
+              <span className="text-secondary text-sm font-semibold uppercase tracking-wider">
+                What We Do
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mt-2">
+                A Different Drive Everyday!
+              </h2>
+            </div>
+            <div className="flex items-center">
+              <p className="text-gray-400 leading-relaxed">
+                We provide driving services for teen drivers, new adult learners, and existing
+                drivers who want to sharpen their skills. Our experienced instructors create
+                personalised lesson plans that adapt to your pace and build real-world confidence
+                on the road.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {FEATURES.slice(0, 4).map((feature, idx) => (
+              <div
+                key={feature.title}
+                className="border border-white/10 rounded-lg p-6 bg-white/5 hover:bg-white/10 transition-colors"
+              >
+                <div className="w-14 h-14 rounded-full border border-secondary/40 flex items-center justify-center mb-5">
                   {FEATURE_ICONS[idx]}
                 </div>
-                <div>
-                  <h3 className="font-bold text-white text-lg mb-2">{feature.title}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">{feature.description}</p>
-                </div>
+                <h3 className="font-bold text-white text-lg mb-2">{feature.title}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">{feature.description}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Section 8 - Stats / Quotes */}
-      <section className="bg-light py-20">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            {QUOTES.map((q) => (
-              <div key={q.author} className="bg-white rounded-xl p-8 shadow-sm">
-                <Quote size={28} className="text-secondary/30 mb-4" />
-                <p className="text-primary font-medium italic text-lg mb-4">"{q.text}"</p>
-                <span className="text-gray-400 text-sm">-- {q.author}</span>
-              </div>
-            ))}
-          </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {STATS.map((stat) => (
-              <div key={stat.label} className="text-center bg-white rounded-xl p-8 shadow-sm">
-                <span className="block text-4xl md:text-5xl font-extrabold text-secondary mb-2">
-                  {stat.value}
-                </span>
-                <span className="text-gray-500 font-medium">{stat.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Section 9 - Instructor Bio */}
+      {/* Section 7 — Motivational Quotes (3 colored cards) */}
       <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4">
-          <SectionHeading
-            subtitle="WHERE CAN YOU FIND US"
-            title="Meet David Apperson"
-          />
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {QUOTES.map((q) => (
+              <div
+                key={q.text}
+                className={`${q.color} rounded-lg p-10 flex items-center justify-center min-h-[200px]`}
+              >
+                <p className="text-white text-xl md:text-2xl font-medium text-center leading-relaxed">
+                  "{q.text}"
+                </p>
+              </div>
+            ))}
+          </div>
+          <p className="text-center text-gray-500 mt-12 text-lg">
+            Our nearly 4,000 committed staff members are ready to help.
+          </p>
+        </div>
+      </section>
+
+      {/* Section 8 — Partner Logos */}
+      <section className="bg-white py-12 border-t border-gray-200">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center">
+            {['Partner 1', 'Partner 2', 'Partner 3', 'Partner 4'].map((partner) => (
+              <span
+                key={partner}
+                className="text-gray-400 text-lg font-semibold tracking-wide"
+              >
+                {partner}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Section 9 — Instructor Bio */}
+      <section className="bg-white py-20">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="w-full h-96 rounded-2xl bg-gradient-to-br from-secondary/20 via-light to-accent/10 flex items-center justify-center">
+              <div className="w-48 h-48 rounded-full bg-gradient-to-br from-secondary/30 to-accent/30 flex items-center justify-center">
+                <Users size={64} className="text-gray-400" />
+              </div>
+            </div>
+
             <div>
-              <h3 className="text-2xl font-bold text-primary mb-4">
-                Hi, I'm David Apperson. I'm your instructor.
-              </h3>
-              <p className="text-gray-600 leading-relaxed mb-6">
-                With over 15 years of experience teaching new drivers across London,
-                I founded WeMake Drivers to provide a calm, supportive learning environment.
-                We operate across all London zones, from the busy streets of Central London
-                to the quieter roads of the suburbs. Our mission is to help every learner
-                build genuine confidence behind the wheel.
+              <span className="text-secondary text-sm font-semibold uppercase tracking-wider">
+                Where Can You Find Us
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-primary mt-2 mb-2">
+                Hi, I'm James Apperson.
+              </h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
+                I'm your instructor.
+              </h2>
+              <p className="text-gray-500 leading-relaxed mb-8">
+                With over 15 years of experience teaching new drivers, I founded this driving
+                school to provide a calm, supportive learning environment. We operate across
+                all London zones, from the busy streets of Central London to the quieter roads
+                of the suburbs. Our mission is to help every learner build genuine confidence
+                behind the wheel.
               </p>
-              <p className="text-gray-600 leading-relaxed mb-8">
-                Whether you need automatic or manual lessons, intensive courses, or just a
-                refresher, we tailor every lesson to your pace and goals. London driving
-                doesn't have to be daunting -- let us show you.
-              </p>
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <a
                   href={`mailto:${SITE.email}`}
                   className="flex items-center gap-3 text-gray-600 hover:text-secondary transition-colors"
@@ -331,22 +365,13 @@ function Home() {
                   <Phone size={20} className="text-secondary" />
                   {SITE.phone}
                 </a>
-                <div className="flex items-center gap-3 text-gray-600">
-                  <MapPin size={20} className="text-secondary" />
-                  {SITE.address}
-                </div>
               </div>
-            </div>
-            <div className="w-full h-80 lg:h-96 rounded-2xl bg-gradient-to-br from-accent/20 via-light to-secondary/10 border border-gray-200 flex flex-col items-center justify-center gap-4">
-              <Map size={48} className="text-accent/40" />
-              <span className="text-gray-400 font-medium">London Coverage Area</span>
-              <span className="text-gray-300 text-sm">All London Zones Covered</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Section 10 - Testimonials */}
+      {/* Section 10 — Testimonials */}
       <section className="bg-light py-20">
         <div className="max-w-7xl mx-auto px-4">
           <SectionHeading
@@ -357,7 +382,10 @@ function Home() {
           />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {TESTIMONIALS.map((t) => (
-              <div key={t.name} className="bg-white rounded-xl p-8 shadow-sm hover:shadow-lg transition-shadow">
+              <div
+                key={t.name}
+                className="bg-white rounded-xl p-8 shadow-sm hover:shadow-lg transition-shadow"
+              >
                 <Quote size={28} className="text-secondary/30 mb-4" />
                 <p className="text-gray-600 leading-relaxed mb-6">"{t.text}"</p>
                 <div className="flex items-center gap-1 mb-3">
@@ -373,7 +401,7 @@ function Home() {
         </div>
       </section>
 
-      {/* Section 11 - Blog Posts */}
+      {/* Section 11 — Blog */}
       <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4">
           <SectionHeading
@@ -395,8 +423,13 @@ function Home() {
                   to={`/blog/${post.slug}`}
                   className="group bg-light rounded-xl overflow-hidden hover:shadow-lg transition-shadow"
                 >
-                  <div className={`h-48 bg-gradient-to-br ${gradients[idx]} flex items-center justify-center`}>
-                    <Car size={48} className="text-white/50 group-hover:scale-110 transition-transform" />
+                  <div
+                    className={`h-48 bg-gradient-to-br ${gradients[idx]} flex items-center justify-center`}
+                  >
+                    <Car
+                      size={48}
+                      className="text-white/50 group-hover:scale-110 transition-transform"
+                    />
                   </div>
                   <div className="p-6">
                     <div className="flex items-center gap-3 mb-3">

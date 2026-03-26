@@ -1,149 +1,182 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Mail, Phone, Star, Menu, X, ChevronDown } from 'lucide-react'
-import { SITE, NAV_LINKS } from '../../data/site'
+import { Search, Menu, X, ChevronDown } from 'lucide-react'
+import { NAV_LINKS } from '../../data/site'
 
 function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const location = useLocation()
 
   const isActive = (path: string) => location.pathname === path
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  useEffect(() => {
+    setMobileOpen(false)
+  }, [location.pathname])
+
   return (
-    <header className="w-full z-50 relative">
-      {/* Top Bar */}
-      <div className="bg-primary text-white text-sm">
-        <div className="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
-          <div className="flex items-center gap-6">
-            <a href={`mailto:${SITE.email}`} className="flex items-center gap-2 hover:text-secondary transition-colors">
-              <Mail size={14} />
-              <span className="hidden sm:inline">{SITE.email}</span>
-            </a>
-            <a href={`tel:${SITE.phone}`} className="flex items-center gap-2 hover:text-secondary transition-colors">
-              <Phone size={14} />
-              <span>Call Us: {SITE.phone}</span>
-            </a>
-          </div>
-          <div className="flex items-center gap-1">
-            <Star size={14} className="text-gold fill-gold" />
-            <span className="font-semibold">{SITE.rating}/5</span>
-            <span className="hidden sm:inline ml-1">Happy Reviews</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Nav */}
-      <nav className="bg-white shadow-md">
-        <div className="max-w-7xl mx-auto px-4 flex justify-between items-center h-20">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center">
-              <span className="text-white font-bold text-lg">W</span>
-            </div>
-            <span className="text-xl font-bold text-primary">
-              WeMake<span className="text-secondary">Drivers</span>
+    <header
+      className={`w-full sticky top-0 z-50 bg-white transition-shadow duration-300 ${
+        scrolled ? 'shadow-md' : 'shadow-none'
+      }`}
+    >
+      <nav className="max-w-7xl mx-auto px-6 flex items-center justify-between h-20">
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-0.5 shrink-0">
+          <span className="text-2xl font-bold tracking-tight text-dark">
+            WeMake
+          </span>
+          <span className="text-2xl font-bold tracking-tight text-dark relative">
+            Dri
+            <span className="relative inline-block">
+              v
+              <span className="absolute -top-0.5 left-1/2 -translate-x-1/2 text-secondary text-[10px] leading-none font-black">
+                &#x2715;
+              </span>
             </span>
-          </Link>
+            ers
+          </span>
+        </Link>
 
-          {/* Desktop Nav */}
-          <ul className="hidden lg:flex items-center gap-8">
-            {NAV_LINKS.map((link) => (
+        {/* Desktop Nav Links */}
+        <ul className="hidden lg:flex items-center gap-10">
+          {NAV_LINKS.map((link) => {
+            const active = isActive(link.path)
+            const hasChildren = !!link.children
+
+            return (
               <li
                 key={link.label}
                 className="relative"
-                onMouseEnter={() => link.children && setDropdownOpen(true)}
-                onMouseLeave={() => link.children && setDropdownOpen(false)}
+                onMouseEnter={() => hasChildren && setDropdownOpen(true)}
+                onMouseLeave={() => hasChildren && setDropdownOpen(false)}
               >
-                {link.children ? (
+                {/* Active indicator — green line ABOVE */}
+                {active && (
+                  <span className="absolute -top-[1px] left-1/2 -translate-x-1/2 w-6 h-[3px] rounded-full bg-secondary" />
+                )}
+
+                {hasChildren ? (
                   <>
-                    <button className={`flex items-center gap-1 font-medium transition-colors py-2 ${
-                      isActive(link.path) ? 'text-secondary' : 'text-primary hover:text-secondary'
-                    }`}>
+                    <button
+                      className={`flex items-center gap-1 uppercase text-[13px] font-medium tracking-[0.08em] py-6 transition-colors ${
+                        active
+                          ? 'text-secondary'
+                          : 'text-dark hover:text-secondary'
+                      }`}
+                    >
                       {link.label}
-                      <ChevronDown size={16} />
+                      <ChevronDown size={14} strokeWidth={2.5} />
                     </button>
-                    {dropdownOpen && (
-                      <ul className="absolute top-full left-0 bg-white shadow-lg rounded-lg py-2 min-w-[200px] z-50">
-                        {link.children.map((child) => (
+
+                    {/* Dropdown */}
+                    <div
+                      className={`absolute top-full left-0 pt-0 transition-all duration-200 ${
+                        dropdownOpen
+                          ? 'opacity-100 visible translate-y-0'
+                          : 'opacity-0 invisible -translate-y-2'
+                      }`}
+                    >
+                      <ul className="bg-white shadow-lg rounded-md py-2 min-w-[200px] border border-gray-100">
+                        {link.children!.map((child) => (
                           <li key={child.path}>
                             <Link
                               to={child.path}
-                              className="block px-4 py-2 text-sm text-primary hover:bg-light hover:text-secondary transition-colors"
+                              className="block px-5 py-2.5 text-[13px] uppercase tracking-[0.05em] font-medium text-dark hover:text-secondary hover:bg-light transition-colors"
                             >
                               {child.label}
                             </Link>
                           </li>
                         ))}
                       </ul>
-                    )}
+                    </div>
                   </>
                 ) : (
                   <Link
                     to={link.path}
-                    className={`font-medium transition-colors ${
-                      isActive(link.path) ? 'text-secondary' : 'text-primary hover:text-secondary'
+                    className={`block uppercase text-[13px] font-medium tracking-[0.08em] py-6 transition-colors ${
+                      active
+                        ? 'text-secondary'
+                        : 'text-dark hover:text-secondary'
                     }`}
                   >
                     {link.label}
                   </Link>
                 )}
               </li>
-            ))}
-          </ul>
+            )
+          })}
+        </ul>
 
-          <Link
-            to="/contact-us"
-            className="hidden lg:inline-block bg-secondary text-white px-6 py-3 rounded-full font-semibold hover:bg-secondary/90 transition-colors"
-          >
-            Book Now
-          </Link>
-
-          {/* Mobile Toggle */}
+        {/* Right side icons */}
+        <div className="flex items-center gap-4 shrink-0">
+          {/* Search icon */}
           <button
-            className="lg:hidden text-primary"
+            className="hidden lg:flex items-center justify-center w-10 h-10 text-dark hover:text-secondary transition-colors"
+            aria-label="Search"
+          >
+            <Search size={20} strokeWidth={2} />
+          </button>
+
+          {/* Hamburger icon — dark rounded square */}
+          <button
+            className="flex items-center justify-center w-10 h-10 bg-dark rounded-lg text-white hover:bg-dark/90 transition-colors"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
-            {mobileOpen ? <X size={28} /> : <Menu size={28} />}
+            {mobileOpen ? (
+              <X size={20} strokeWidth={2.5} />
+            ) : (
+              <Menu size={20} strokeWidth={2.5} />
+            )}
           </button>
         </div>
+      </nav>
 
-        {/* Mobile Menu */}
-        {mobileOpen && (
-          <div className="lg:hidden bg-white border-t px-4 pb-4">
-            {NAV_LINKS.map((link) => (
-              <div key={link.label}>
+      {/* Mobile Menu — slides down */}
+      <div
+        className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+          mobileOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+        }`}
+      >
+        <div className="bg-white border-t border-gray-100 px-6 pb-6 pt-2">
+          {NAV_LINKS.map((link) => (
+            <div key={link.label}>
+              <Link
+                to={link.path}
+                className={`block py-3.5 uppercase text-[13px] font-medium tracking-[0.08em] border-b border-gray-100 transition-colors ${
+                  isActive(link.path)
+                    ? 'text-secondary'
+                    : 'text-dark hover:text-secondary'
+                }`}
+                onClick={() => setMobileOpen(false)}
+              >
+                <span className="flex items-center justify-between">
+                  {link.label}
+                  {link.children && <ChevronDown size={14} strokeWidth={2.5} />}
+                </span>
+              </Link>
+              {link.children?.map((child) => (
                 <Link
-                  to={link.path}
-                  className={`block py-3 font-medium border-b border-gray-100 ${
-                    isActive(link.path) ? 'text-secondary' : 'text-primary'
-                  }`}
+                  key={child.path}
+                  to={child.path}
+                  className="block py-2.5 pl-4 uppercase text-[12px] font-medium tracking-[0.05em] text-gray-text hover:text-secondary border-b border-gray-50 transition-colors"
                   onClick={() => setMobileOpen(false)}
                 >
-                  {link.label}
+                  {child.label}
                 </Link>
-                {link.children?.map((child) => (
-                  <Link
-                    key={child.path}
-                    to={child.path}
-                    className="block py-2 pl-4 text-sm text-gray-600 border-b border-gray-50"
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    {child.label}
-                  </Link>
-                ))}
-              </div>
-            ))}
-            <Link
-              to="/contact-us"
-              className="block mt-4 text-center bg-secondary text-white px-6 py-3 rounded-full font-semibold"
-              onClick={() => setMobileOpen(false)}
-            >
-              Book Now
-            </Link>
-          </div>
-        )}
-      </nav>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
     </header>
   )
 }
