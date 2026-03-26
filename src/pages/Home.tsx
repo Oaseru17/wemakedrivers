@@ -104,7 +104,7 @@ function Home() {
               <div className="flex flex-wrap items-center gap-4">
                 <a
                   href="#how-it-works"
-                  className="inline-block border-2 border-secondary text-secondary px-8 py-3 font-semibold uppercase tracking-wider text-sm hover:bg-secondary hover:text-white transition-colors"
+                  className="inline-block border-2 border-secondary text-secondary px-8 py-3 rounded-full font-semibold uppercase tracking-wider text-sm hover:bg-secondary hover:text-white transition-colors"
                 >
                   How We Help
                 </a>
