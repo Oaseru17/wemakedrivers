@@ -96,10 +96,10 @@ function Home() {
               </div>
 
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6 max-w-2xl">
-                Champion<br />Driving
+                Pass First Time.<br />Drive For Life.
               </h1>
               <p className="text-white/80 text-lg md:text-xl max-w-xl mb-10 leading-relaxed">
-                We have more positive reviews than anyone else. We make learning to drive easy and stress free.
+                98% of our learners pass on their first attempt. We don't just teach you to pass a test — we build confident, safe drivers for London's roads.
               </p>
               <div className="flex flex-wrap items-center gap-4">
                 <a
