@@ -799,13 +799,13 @@ function Dashboard() {
                     <button
                       key={b.id}
                       onClick={() => setSelectedBooking(b)}
-                      className="w-full text-left p-4 rounded-xl border border-gray-100 hover:border-secondary/30 hover:bg-secondary/5 transition-colors"
+                      className="w-full text-left px-5 py-5 rounded-xl border border-gray-100 hover:border-secondary/30 hover:bg-secondary/5 transition-colors"
                     >
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: LESSON_COLORS[b.lessonType] }} />
-                        <span className="font-semibold text-primary text-sm truncate">{b.studentName}</span>
+                      <div className="flex items-center gap-3 mb-3">
+                        <span className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: LESSON_COLORS[b.lessonType] }} />
+                        <span className="font-semibold text-primary text-base truncate">{b.studentName}</span>
                       </div>
-                      <div className="flex items-center gap-3 text-xs text-gray-500">
+                      <div className="flex items-center gap-4 text-sm text-gray-500">
                         <span>{new Date(b.date).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}</span>
                         <span>{b.hour}:00</span>
                         <span className="truncate">{b.area}</span>
