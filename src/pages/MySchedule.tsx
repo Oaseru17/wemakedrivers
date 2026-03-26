@@ -695,7 +695,7 @@ function Dashboard() {
                     return (
                       <div
                         key={`${dateStr}-${hour}`}
-                        className={`border-l min-h-[64px] p-1.5 cursor-pointer transition-colors ${
+                        className={`border-l p-2 cursor-pointer transition-colors ${
                           isToday ? 'bg-secondary/5' : ''
                         } ${!booking && !blocked ? 'hover:bg-green-50' : ''}`}
                         onClick={() => {
@@ -714,11 +714,11 @@ function Dashboard() {
                       >
                         {booking ? (
                           <div
-                            className="text-white rounded-md px-2 py-2 text-xs"
-                            style={{ backgroundColor: LESSON_COLORS[booking.lessonType], minHeight: 48 }}
+                            className="text-white rounded-lg px-3 py-3 text-xs"
+                            style={{ backgroundColor: LESSON_COLORS[booking.lessonType], minHeight: 56 }}
                           >
-                            <p className="font-semibold truncate">{booking.studentName}</p>
-                            <p className="opacity-80 truncate text-[11px]">{booking.area} &middot; {LESSON_TYPE_LABELS[booking.lessonType]}</p>
+                            <p className="font-bold truncate text-sm">{booking.studentName}</p>
+                            <p className="opacity-80 truncate text-xs mt-1">{booking.area} &middot; {LESSON_TYPE_LABELS[booking.lessonType]}</p>
                           </div>
                         ) : blocked ? (
                           <div className="bg-gray-200 rounded-md px-2 py-2 text-xs h-full flex items-center justify-center text-gray-500">
