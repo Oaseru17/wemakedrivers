@@ -28,50 +28,50 @@ export const NAV_LINKS = [
 export const COURSES = [
   {
     id: 'choosing-instructor',
-    title: 'Choosing a Driving Instructor',
-    description: 'Learn what to look for in a qualified driving instructor and how to find the right match for your learning style.',
+    title: 'Find Your Perfect Instructor',
+    description: "You'll be matched with an instructor who fits your personality and learning style — so every lesson feels comfortable.",
     icon: 'user-check',
   },
   {
     id: 'automatic-lessons',
     title: 'Automatic Driving Lessons',
-    description: 'Master driving in an automatic vehicle with our comprehensive lesson plans designed for beginners.',
+    description: "If you'd rather skip the clutch, our automatic lessons let you focus purely on the road and build your confidence faster.",
     icon: 'car',
   },
   {
     id: 'manual-lessons',
     title: 'Manual Driving Lessons',
-    description: 'Full manual driving course covering clutch control, gear changes, and all aspects of manual driving.',
+    description: "Want full control? You'll master clutch control, smooth gear changes, and everything you need to drive any car.",
     icon: 'settings',
   },
   {
     id: 'test-preparation',
     title: 'Test Preparation',
-    description: 'Intensive courses focused on preparing you for both the theory and practical driving tests.',
+    description: "When you're ready for your test, we'll run you through mock exams, tricky junctions, and everything the examiner looks for.",
     icon: 'clipboard-check',
   },
   {
     id: 'motorway-lessons',
     title: 'Motorway Lessons',
-    description: 'Build confidence on motorways with expert guidance on lane discipline, merging, and high-speed driving.',
+    description: "Motorways can feel intimidating at first. We'll be right beside you, helping you master lane changes, merging, and speed.",
     icon: 'route',
   },
   {
     id: 'refresher-course',
     title: 'Refresher Course',
-    description: 'Perfect for returning drivers who want to rebuild confidence after a break from driving.',
+    description: "Haven't driven in a while? No worries — you'll shake off the rust and get your confidence back in just a few sessions.",
     icon: 'refresh-cw',
   },
   {
     id: 'pass-plus',
     title: 'Pass Plus',
-    description: 'Post-test course covering motorways, night driving, and adverse weather conditions. Can reduce insurance costs.',
+    description: "Already passed? Level up with night driving, motorways, and adverse weather — plus you could save on your insurance.",
     icon: 'award',
   },
   {
     id: 'intensive-course',
     title: 'Intensive Crash Course',
-    description: 'Fast-track your learning with our intensive courses — pass your test in as little as one week.',
+    description: "Need your licence fast? You could be test-ready in as little as one week with our focused, intensive programme.",
     icon: 'zap',
   },
 ]
@@ -80,17 +80,17 @@ export const TESTIMONIALS = [
   {
     name: 'Sarah Mitchell',
     role: 'Passed First Time',
-    text: "WeMake Drivers made learning to drive easy and stress-free. My instructor was patient and really knew how to explain things clearly. Passed first time!",
+    text: "I was so nervous starting out, but my instructor made everything feel easy. I passed first time and I actually enjoy driving now!",
   },
   {
     name: 'James Okonkwo',
     role: 'Nervous Beginner',
-    text: "I was terrified of driving but my instructor at WeMake Drivers was so calm and encouraging. I can't believe I actually passed! Highly recommend.",
+    text: "I put off learning for years because I was scared. My instructor was incredibly patient — I went from terrified to passing in 8 weeks.",
   },
   {
     name: 'Priya Sharma',
     role: 'Intensive Course',
-    text: "Did the intensive course and passed in just 2 weeks. The structured approach and mock tests really prepared me well. Worth every penny.",
+    text: "I did the intensive course and passed in 2 weeks. The mock tests made the real thing feel easy. Best decision I made.",
   },
 ]
 
@@ -98,7 +98,7 @@ export const BLOG_POSTS = [
   {
     slug: 'choosing-the-right-instructor',
     title: 'How to Choose the Right Driving Instructor',
-    excerpt: 'Finding the right instructor can make or break your learning experience. Here are the key things to look for.',
+    excerpt: "Your instructor can make or break your experience. Here's how to find someone who actually fits your learning style.",
     date: '2026-03-20',
     category: 'Tips',
     image: '/images/blog-1.jpg',
@@ -106,7 +106,7 @@ export const BLOG_POSTS = [
   {
     slug: 'test-day-tips',
     title: 'Test Day: Everything You Need to Know',
-    excerpt: 'Nervous about your driving test? Here are our top tips for staying calm and passing with confidence.',
+    excerpt: "Feeling nervous? That's normal. Here's exactly what to expect on test day and how to stay calm behind the wheel.",
     date: '2026-03-15',
     category: 'Test Prep',
     image: '/images/blog-2.jpg',
@@ -114,7 +114,7 @@ export const BLOG_POSTS = [
   {
     slug: 'london-driving-guide',
     title: 'Navigating London: A New Driver\'s Guide',
-    excerpt: 'London roads can be daunting for new drivers. Learn the key routes, roundabouts, and tips for city driving.',
+    excerpt: "London roads can feel overwhelming at first. Here are the routes, roundabouts, and tips that will make you feel at home.",
     date: '2026-03-10',
     category: 'Guides',
     image: '/images/blog-3.jpg',
@@ -128,35 +128,35 @@ export const TEAM = [
 ]
 
 export const STATS = [
-  { value: '5K+', label: 'Happy Drivers' },
-  { value: '15+', label: 'Years Experience' },
-  { value: '98%', label: 'Pass Rate' },
-  { value: '40+', label: 'Instructors' },
+  { value: '5K+', label: 'Learners Passed' },
+  { value: '15+', label: 'Years Teaching' },
+  { value: '98%', label: 'First-Time Pass Rate' },
+  { value: '4.8', label: 'Average Rating' },
 ]
 
 export const HOW_IT_WORKS = [
   {
-    title: 'Sign Up Online',
-    description: 'Register on our website in under 2 minutes. Tell us about your experience level and preferred times.',
+    title: 'Tell Us About You',
+    description: "Fill in a quick form — your experience, your area, and when you're free. Takes under 2 minutes.",
     icon: 'user-plus',
   },
   {
-    title: 'Book Your Lessons',
-    description: 'Choose from available time slots that work around your schedule. Flexible booking, easy rescheduling.',
+    title: 'Pick Your Slots',
+    description: "Choose lesson times that work around your life. Evenings, weekends, whenever suits you best.",
     icon: 'calendar',
   },
   {
-    title: 'Start Driving',
-    description: 'Meet your instructor and begin your journey to becoming a confident, safe driver on London roads.',
+    title: 'Get Behind the Wheel',
+    description: "Your instructor picks you up from home, work, or college. You'll be driving from your very first lesson.",
     icon: 'car',
   },
 ]
 
 export const FEATURES = [
-  { title: 'Flexible Schedule', description: 'Book lessons around your work, school, or college timetable.' },
-  { title: 'Confident Driving', description: 'Build real confidence with patient, experienced instructors.' },
-  { title: 'Experienced Teachers', description: 'All our instructors are DVSA-approved with years of experience.' },
-  { title: 'Driving Basics', description: 'Master the fundamentals from clutch control to parallel parking.' },
-  { title: 'Test Preparation', description: 'Focused prep for both theory and practical driving tests.' },
-  { title: 'London Coverage', description: 'We cover all London zones — wherever you are, we come to you.' },
+  { title: 'Your Schedule, Your Pace', description: "Book lessons when it suits you — mornings, evenings, weekends. You're in control." },
+  { title: 'Real Confidence', description: "You won't just learn to pass. You'll learn to actually enjoy being behind the wheel." },
+  { title: 'DVSA-Approved Instructors', description: "Every instructor is qualified, vetted, and genuinely loves teaching people to drive." },
+  { title: 'Basics to Advanced', description: "Whether you're touching a steering wheel for the first time or prepping for your test — we've got you." },
+  { title: 'Test-Ready Prep', description: "Mock tests, examiner routes, and honest feedback so there are no surprises on the day." },
+  { title: 'We Come to You', description: "Wherever you are in London, your instructor picks you up. No commute, no hassle." },
 ]

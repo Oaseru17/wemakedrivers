@@ -79,7 +79,7 @@ function Courses() {
       <section className="py-20 bg-primary">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            Our nearly 4,000 committed staff members are ready to help.
+            Not sure which course is right for you? Let's talk.
           </h2>
           <Link
             to="/contact-us"

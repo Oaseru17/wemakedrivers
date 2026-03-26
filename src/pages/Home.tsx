@@ -50,9 +50,9 @@ const FEATURE_ICONS = [
 ]
 
 const QUOTES = [
-  { text: 'Like if I drive faster, I could get to the happiness', color: 'bg-teal' },
-  { text: "Good ideas don't require proper planning or schedule", color: 'bg-purple' },
-  { text: 'People who trust themselves to actually follow through', color: 'bg-orange' },
+  { text: "I never thought I'd pass first time — but here I am, driving to work every day", color: 'bg-teal' },
+  { text: "The best part? My instructor believed in me before I believed in myself", color: 'bg-purple' },
+  { text: "I went from being scared of roundabouts to loving the open road", color: 'bg-orange' },
 ]
 
 const COURSE_CARD_GRADIENTS = [
@@ -123,7 +123,7 @@ function Home() {
             {/* Right — Apply form (overlapping hero) */}
             <div className="lg:col-span-2 lg:translate-y-32">
               <div className="bg-white rounded-lg p-8 shadow-xl">
-                <h3 className="text-xl font-bold text-primary mb-6">Apply Now</h3>
+                <h3 className="text-xl font-bold text-primary mb-6">Start Your Journey</h3>
                 <form className="space-y-4">
                   <input
                     type="text"
@@ -168,7 +168,7 @@ function Home() {
                     type="submit"
                     className="w-full bg-primary text-white py-3.5 rounded font-semibold uppercase tracking-wider text-sm hover:bg-accent transition-colors"
                   >
-                    Apply Now
+                    Get Started
                   </button>
                 </form>
               </div>
@@ -181,14 +181,14 @@ function Home() {
       <section className="bg-white pt-20 pb-20">
         <div className="max-w-7xl mx-auto px-4 lg:w-3/5">
           <span className="text-secondary text-sm font-semibold uppercase tracking-wider">
-            Our Courses
+            Your Journey
           </span>
           <h2 className="text-3xl md:text-4xl font-bold text-primary mt-2 mb-4">
-            Driver Safety On The Road
+            Lessons Built Around You
           </h2>
           <p className="text-gray-500 leading-relaxed mb-10 max-w-lg">
-            We offer a wide range of driving courses tailored to your needs, whether you're a
-            complete beginner or looking to sharpen your skills.
+            Whether you're a complete beginner or getting back behind the wheel,
+            your lessons are shaped to fit your pace, your goals, and your schedule.
           </p>
 
           <div className="space-y-8">
@@ -214,10 +214,10 @@ function Home() {
         <div className="max-w-7xl mx-auto px-4 flex flex-col lg:flex-row items-center justify-between gap-8">
           <div>
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
-              Start Learning to Drive Today
+              Ready to Get Started?
             </h2>
             <p className="text-white/80 text-lg">
-              It's Free and always will be.
+              Your first step is a quick chat. No pressure, no commitment.
             </p>
           </div>
           <a
@@ -250,7 +250,7 @@ function Home() {
             ))}
           </div>
           <p className="text-center text-gray-500 mt-12 text-lg">
-            Our nearly 4,000 committed staff members are ready to help.
+            Not sure which course is right for you? <Link to="/contact-us" className="text-secondary font-semibold hover:underline">Let's figure it out together.</Link>
           </p>
         </div>
       </section>
@@ -259,9 +259,9 @@ function Home() {
       <section id="how-it-works" className="bg-white py-20 border-t border-gray-100">
         <div className="max-w-7xl mx-auto px-4">
           <SectionHeading
-            subtitle="OUR SERVICES"
-            title="How it Works"
-            description="Getting on the road is easier than you think. Just three simple steps."
+            subtitle="HOW IT WORKS"
+            title="Three Steps to Your Licence"
+            description="Getting on the road is easier than you think. Here's how it works for you."
             center
           />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
@@ -286,18 +286,17 @@ function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
             <div>
               <span className="text-secondary text-sm font-semibold uppercase tracking-wider">
-                What We Do
+                What You Get
               </span>
               <h2 className="text-3xl md:text-4xl font-bold text-white mt-2">
-                A Different Drive Everyday!
+                Everything You Need to Pass
               </h2>
             </div>
             <div className="flex items-center">
               <p className="text-gray-400 leading-relaxed">
-                We provide driving services for teen drivers, new adult learners, and existing
-                drivers who want to sharpen their skills. Our experienced instructors create
-                personalised lesson plans that adapt to your pace and build real-world confidence
-                on the road.
+                Whether you're 17 and just starting out, picking it back up after a break, or switching
+                from automatic to manual — your lessons are tailored to you. No one-size-fits-all.
+                Your instructor adapts to how you learn best.
               </p>
             </div>
           </div>
@@ -335,7 +334,7 @@ function Home() {
             ))}
           </div>
           <p className="text-center text-gray-500 mt-12 text-lg">
-            Our nearly 4,000 committed staff members are ready to help.
+            That could be you. <Link to="/contact-us" className="text-secondary font-semibold hover:underline">Start your journey today.</Link>
           </p>
         </div>
       </section>
@@ -368,20 +367,20 @@ function Home() {
 
             <div>
               <span className="text-secondary text-sm font-semibold uppercase tracking-wider">
-                Where Can You Find Us
+                A Message From Your Instructor
               </span>
               <h2 className="text-3xl md:text-4xl font-bold text-primary mt-2 mb-2">
-                Hi, I'm James Apperson.
+                Hi, I'm David.
               </h2>
               <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
-                I'm your instructor.
+                I'll be teaching you.
               </h2>
               <p className="text-gray-500 leading-relaxed mb-8">
-                With over 15 years of experience teaching new drivers, I founded this driving
-                school to provide a calm, supportive learning environment. We operate across
-                all London zones, from the busy streets of Central London to the quieter roads
-                of the suburbs. Our mission is to help every learner build genuine confidence
-                behind the wheel.
+                I've been teaching people to drive for over 15 years, and I still love it.
+                Whether you're nervous, excited, or somewhere in between — I'll meet you where
+                you are. My job isn't just to get you through the test. It's to make sure you
+                feel genuinely confident every time you sit behind the wheel. I cover all of
+                London, so wherever you are, I'll come to you.
               </p>
               <div className="space-y-4">
                 <a
@@ -413,11 +412,12 @@ function Home() {
                 Areas We Cover
               </span>
               <h2 className="text-3xl md:text-4xl font-bold text-white mt-2 mb-4">
-                Driving Lessons Across London
+                We'll Come to You
               </h2>
               <p className="text-gray-300 leading-relaxed mb-8">
-                Wherever you are in London, we come to you. Our instructors cover all major zones,
-                so you can learn on the roads you'll actually be driving on. Pick-up from home, work, or college.
+                No need to travel — your instructor picks you up from home, work, or college.
+                You'll learn on the same roads you'll be driving every day, so nothing feels
+                unfamiliar when you're on your own.
               </p>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8">
@@ -439,7 +439,7 @@ function Home() {
               </div>
 
               <p className="text-gray-400 text-sm">
-                Don't see your area? <a href="/contact-us" className="text-secondary hover:underline">Get in touch</a> — we likely cover it.
+                Don't see your area? <a href="/contact-us" className="text-secondary hover:underline">Drop us a message</a> — chances are we're already there.
               </p>
             </div>
 
@@ -475,9 +475,9 @@ function Home() {
       <section className="bg-light py-20">
         <div className="max-w-7xl mx-auto px-4">
           <SectionHeading
-            subtitle="HAPPY DRIVERS"
-            title="Testimonials"
-            description="Don't just take our word for it. Hear what our learners have to say."
+            subtitle="FROM PEOPLE LIKE YOU"
+            title="They Passed. You're Next."
+            description="Real stories from real learners who were exactly where you are right now."
             center
           />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -505,9 +505,9 @@ function Home() {
       <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4">
           <SectionHeading
-            subtitle="FROM OUR BLOG"
-            title="What's on our mind"
-            description="Tips, guides, and insights to help you on your driving journey."
+            subtitle="TIPS & GUIDES"
+            title="Helpful Reads Before Your Test"
+            description="Honest advice to help you feel prepared — written by people who've taught thousands to pass."
             center
           />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
