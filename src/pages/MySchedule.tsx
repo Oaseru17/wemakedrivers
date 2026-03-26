@@ -17,14 +17,16 @@ import {
 } from 'lucide-react'
 import {
   MOCK_BOOKINGS,
+  MOCK_STUDENTS,
   HOURS,
   LESSON_TYPE_LABELS,
   ACCESS_CODE,
 } from '../data/schedule'
-import type { Booking } from '../data/schedule'
+import type { Booking, Student } from '../data/schedule'
 import SEO from '../components/shared/SEO'
 
-const fmt = (d: Date) => d.toISOString().split('T')[0]
+const fmt = (d: Date) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 
 function getWeekDates(baseDate: Date): Date[] {
   const day = baseDate.getDay()
@@ -40,12 +42,12 @@ function getWeekDates(baseDate: Date): Date[] {
 const DAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
 const LESSON_COLORS: Record<string, string> = {
-  'automatic': 'bg-blue-500',
-  'manual': 'bg-emerald-500',
-  'intensive': 'bg-orange-500',
-  'test-prep': 'bg-purple-500',
-  'motorway': 'bg-cyan-500',
-  'refresher': 'bg-amber-500',
+  'automatic': '#3b82f6',
+  'manual': '#10b981',
+  'intensive': '#f97316',
+  'test-prep': '#8b5cf6',
+  'motorway': '#06b6d4',
+  'refresher': '#f59e0b',
 }
 
 function CodeGate({ onUnlock }: { onUnlock: () => void }) {
@@ -137,7 +139,7 @@ function BookingDetail({
         </button>
 
         <div className="flex items-center gap-3 mb-6">
-          <div className={`w-3 h-3 rounded-full ${LESSON_COLORS[booking.lessonType]}`} />
+          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: LESSON_COLORS[booking.lessonType] }} />
           <span className="text-sm font-medium text-gray-500 uppercase tracking-wide">
             {LESSON_TYPE_LABELS[booking.lessonType]} Lesson
           </span>
@@ -297,11 +299,203 @@ function BookingDetail({
   )
 }
 
+function NewBookingModal({
+  date,
+  hour,
+  hours,
+  weekDates,
+  students,
+  existingBookings,
+  onClose,
+  onCreate,
+  onChangeSlot,
+}: {
+  date: string
+  hour: number
+  hours: number[]
+  weekDates: Date[]
+  students: Student[]
+  existingBookings: Booking[]
+  onClose: () => void
+  onCreate: (data: {
+    studentId: string; studentName: string; phone: string; email: string; area: string;
+    lessonType: Booking['lessonType']; lessonRate: number;
+  }) => void
+  onChangeSlot: (date: string, hour: number) => void
+}) {
+  const [search, setSearch] = useState('')
+  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null)
+  const [rate, setRate] = useState('40')
+
+  const activeStudents = students.filter((s) => s.status === 'active')
+  const filtered = search.trim()
+    ? activeStudents.filter((s) =>
+        s.name.toLowerCase().includes(search.toLowerCase()) ||
+        s.area.toLowerCase().includes(search.toLowerCase()) ||
+        s.phone.includes(search)
+      )
+    : activeStudents
+
+  const isSlotTaken = (d: string, h: number) =>
+    existingBookings.some((b) => b.date === d && b.hour === h && b.status !== 'cancelled')
+
+  const handleSubmit = () => {
+    if (!selectedStudent) return
+    onCreate({
+      studentId: selectedStudent.id,
+      studentName: selectedStudent.name,
+      phone: selectedStudent.phone,
+      email: selectedStudent.email,
+      area: selectedStudent.area,
+      lessonType: selectedStudent.lessonType,
+      lessonRate: parseFloat(rate) || 40,
+    })
+  }
+
+  const dateObj = new Date(date)
+  const dateLabel = dateObj.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' })
+
+  return (
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={onClose}>
+      <div
+        className="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 relative max-h-[90vh] overflow-y-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+          <X size={20} />
+        </button>
+
+        <h2 className="text-xl font-bold text-primary mb-1">Book a Lesson</h2>
+        <p className="text-gray-500 text-sm mb-6">{dateLabel} at {hour}:00</p>
+
+        {/* Slot picker */}
+        <div className="grid grid-cols-2 gap-3 mb-5">
+          <div>
+            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1 block">Date</label>
+            <select
+              value={date}
+              onChange={(e) => onChangeSlot(e.target.value, hour)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-secondary"
+            >
+              {weekDates.map((d) => {
+                const ds = fmt(d)
+                return (
+                  <option key={ds} value={ds}>
+                    {d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}
+                  </option>
+                )
+              })}
+            </select>
+          </div>
+          <div>
+            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1 block">Time</label>
+            <select
+              value={hour}
+              onChange={(e) => onChangeSlot(date, parseInt(e.target.value))}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-secondary"
+            >
+              {hours.map((h) => {
+                const taken = isSlotTaken(date, h)
+                return (
+                  <option key={h} value={h} disabled={taken}>
+                    {h}:00 — {h + 1}:00 {taken ? '(booked)' : ''}
+                  </option>
+                )
+              })}
+            </select>
+          </div>
+        </div>
+
+        {/* Student selection */}
+        {selectedStudent ? (
+          <div className="border border-secondary/30 bg-secondary/5 rounded-lg p-4 mb-5">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="font-bold text-primary">{selectedStudent.name}</h3>
+              <button onClick={() => setSelectedStudent(null)} className="text-gray-400 hover:text-gray-600 text-xs">
+                Change
+              </button>
+            </div>
+            <div className="flex flex-wrap gap-3 text-xs text-gray-500">
+              <span>{selectedStudent.area}</span>
+              <span>{LESSON_TYPE_LABELS[selectedStudent.lessonType]}</span>
+              <span>{selectedStudent.lessonsCompleted} lessons done</span>
+            </div>
+          </div>
+        ) : (
+          <div className="mb-5">
+            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1 block">Select Student</label>
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search by name, area, or phone..."
+              className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-secondary mb-2"
+              autoFocus
+            />
+            <div className="max-h-48 overflow-y-auto border border-gray-200 rounded-lg">
+              {filtered.length === 0 ? (
+                <p className="text-gray-400 text-sm p-3 text-center">No active students found</p>
+              ) : (
+                filtered.map((s) => (
+                  <button
+                    key={s.id}
+                    type="button"
+                    onClick={() => { setSelectedStudent(s); setSearch('') }}
+                    className="w-full text-left p-3 border-b border-gray-100 last:border-b-0 hover:bg-light transition-colors"
+                  >
+                    <p className="font-semibold text-primary text-sm">{s.name}</p>
+                    <p className="text-xs text-gray-500">{s.area} &middot; {LESSON_TYPE_LABELS[s.lessonType]} &middot; {s.lessonsCompleted} lessons</p>
+                  </button>
+                ))
+              )}
+            </div>
+          </div>
+        )}
+
+        <div className="mb-5">
+          <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1 block">Lesson Rate (£)</label>
+          <input
+            type="number"
+            value={rate}
+            onChange={(e) => setRate(e.target.value)}
+            className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-secondary"
+            min="0"
+          />
+        </div>
+
+        <div className="flex gap-3">
+          <button
+            onClick={handleSubmit}
+            disabled={!selectedStudent}
+            className={`flex-1 py-3 rounded-lg font-semibold transition-colors ${
+              selectedStudent
+                ? 'bg-secondary text-white hover:bg-secondary/90'
+                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+            }`}
+          >
+            Book Lesson
+          </button>
+          <button
+            onClick={onClose}
+            className="px-6 py-3 text-gray-500 hover:text-gray-700 transition-colors"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function Dashboard() {
   const [weekOffset, setWeekOffset] = useState(0)
   const [bookings, setBookings] = useState<Booking[]>(MOCK_BOOKINGS)
+  const [students, setStudents] = useState<Student[]>(MOCK_STUDENTS)
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null)
   const [blockedSlots, setBlockedSlots] = useState<Record<string, boolean>>({})
+  const [newBookingSlot, setNewBookingSlot] = useState<{ date: string; hour: number } | null>(null)
+  const [showStudents, setShowStudents] = useState(false)
+  const [showAddStudent, setShowAddStudent] = useState(false)
 
   const baseDate = useMemo(() => {
     const d = new Date()
@@ -355,6 +549,35 @@ function Dashboard() {
     setSelectedBooking(null)
   }
 
+  const handleCreateBooking = (data: {
+    studentId: string; studentName: string; phone: string; email: string; area: string;
+    lessonType: Booking['lessonType']; lessonRate: number;
+  }) => {
+    if (!newBookingSlot) return
+    const newBooking: Booking = {
+      id: `b${Date.now()}`,
+      ...data,
+      status: 'confirmed',
+      date: newBookingSlot.date,
+      hour: newBookingSlot.hour,
+      payments: [],
+    }
+    setBookings((prev) => [...prev, newBooking])
+    setNewBookingSlot(null)
+  }
+
+  const handleAddStudent = (data: Omit<Student, 'id' | 'totalPaid' | 'lessonsCompleted' | 'createdAt'>) => {
+    const newStudent: Student = {
+      ...data,
+      id: `s${Date.now()}`,
+      totalPaid: 0,
+      lessonsCompleted: 0,
+      createdAt: fmt(new Date()),
+    }
+    setStudents((prev) => [...prev, newStudent])
+    setShowAddStudent(false)
+  }
+
   const handleAddPayment = (id: string, amount: number, note: string) => {
     setBookings((prev) => prev.map((b) => {
       if (b.id !== id) return b
@@ -380,7 +603,7 @@ function Dashboard() {
             <h1 className="text-2xl font-bold text-primary">My Schedule</h1>
             <p className="text-gray-500 text-sm">Manage your lessons and availability</p>
           </div>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4">
             <div className="hidden md:flex items-center gap-4 text-sm">
               <span className="flex items-center gap-2">
                 <span className="w-3 h-3 rounded-full bg-secondary" /> {weekStats.confirmed} booked
@@ -389,6 +612,18 @@ function Dashboard() {
                 <span className="w-3 h-3 rounded-full bg-gray-300" /> {weekStats.blocked} blocked
               </span>
             </div>
+            <button
+              onClick={() => setShowStudents(true)}
+              className="flex items-center gap-2 border border-gray-300 text-primary px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-light transition-colors"
+            >
+              <Users size={16} /> Students ({students.filter(s => s.status === 'active').length})
+            </button>
+            <button
+              onClick={() => setNewBookingSlot({ date: todayStr, hour: 9 })}
+              className="flex items-center gap-2 bg-secondary text-white px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-secondary/90 transition-colors"
+            >
+              + Book Lesson
+            </button>
           </div>
         </div>
       </div>
@@ -460,27 +695,40 @@ function Dashboard() {
                     return (
                       <div
                         key={`${dateStr}-${hour}`}
-                        className={`border-l min-h-[52px] p-1 cursor-pointer transition-colors ${
+                        className={`border-l min-h-[64px] p-1.5 cursor-pointer transition-colors ${
                           isToday ? 'bg-secondary/5' : ''
                         } ${!booking && !blocked ? 'hover:bg-green-50' : ''}`}
                         onClick={() => {
                           if (booking) {
                             setSelectedBooking(booking)
-                          } else {
+                          } else if (blocked) {
                             toggleBlock(dateStr, hour)
+                          } else {
+                            setNewBookingSlot({ date: dateStr, hour })
                           }
+                        }}
+                        onContextMenu={(e) => {
+                          e.preventDefault()
+                          if (!booking) toggleBlock(dateStr, hour)
                         }}
                       >
                         {booking ? (
-                          <div className={`${LESSON_COLORS[booking.lessonType]} text-white rounded-md px-2 py-1.5 text-xs h-full`}>
+                          <div
+                            className="text-white rounded-md px-2 py-2 text-xs"
+                            style={{ backgroundColor: LESSON_COLORS[booking.lessonType], minHeight: 48 }}
+                          >
                             <p className="font-semibold truncate">{booking.studentName}</p>
-                            <p className="opacity-80 truncate">{booking.area}</p>
+                            <p className="opacity-80 truncate text-[11px]">{booking.area} &middot; {LESSON_TYPE_LABELS[booking.lessonType]}</p>
                           </div>
                         ) : blocked ? (
-                          <div className="bg-gray-200 rounded-md px-2 py-1.5 text-xs h-full flex items-center justify-center text-gray-500">
+                          <div className="bg-gray-200 rounded-md px-2 py-2 text-xs h-full flex items-center justify-center text-gray-500">
                             Blocked
                           </div>
-                        ) : null}
+                        ) : (
+                          <div className="w-full h-full rounded-md flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                            <span className="text-gray-400 text-[10px]">+ Book</span>
+                          </div>
+                        )}
                       </div>
                     )
                   })}
@@ -491,14 +739,13 @@ function Dashboard() {
 
             {/* Legend */}
             <div className="flex flex-wrap gap-4 mt-4 text-xs text-gray-500">
-              <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded bg-blue-500" /> Automatic</span>
-              <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded bg-emerald-500" /> Manual</span>
-              <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded bg-orange-500" /> Intensive</span>
-              <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded bg-purple-500" /> Test Prep</span>
-              <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded bg-cyan-500" /> Motorway</span>
-              <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded bg-amber-500" /> Refresher</span>
-              <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded bg-gray-300" /> Blocked</span>
-              <span className="text-gray-400 ml-2">Click empty slot to block/unblock</span>
+              {Object.entries(LESSON_TYPE_LABELS).map(([key, label]) => (
+                <span key={key} className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded" style={{ backgroundColor: LESSON_COLORS[key] }} /> {label}
+                </span>
+              ))}
+              <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded" style={{ backgroundColor: '#d1d5db' }} /> Blocked</span>
+              <span className="text-gray-400 ml-2">Click slot to book &middot; Right-click to block</span>
             </div>
           </div>
 
@@ -555,7 +802,7 @@ function Dashboard() {
                       className="w-full text-left p-3 rounded-lg border border-gray-100 hover:border-secondary/30 hover:bg-secondary/5 transition-colors"
                     >
                       <div className="flex items-center gap-2 mb-1">
-                        <span className={`w-2 h-2 rounded-full ${LESSON_COLORS[b.lessonType]}`} />
+                        <span className="w-2 h-2 rounded-full" style={{ backgroundColor: LESSON_COLORS[b.lessonType] }} />
                         <span className="font-semibold text-primary text-sm truncate">{b.studentName}</span>
                       </div>
                       <div className="flex items-center gap-3 text-xs text-gray-500">
@@ -581,6 +828,133 @@ function Dashboard() {
           onNoShow={handleNoShow}
           onAddPayment={handleAddPayment}
         />
+      )}
+
+      {newBookingSlot && (
+        <NewBookingModal
+          date={newBookingSlot.date}
+          hour={newBookingSlot.hour}
+          hours={HOURS}
+          weekDates={weekDates}
+          students={students}
+          existingBookings={bookings}
+          onClose={() => setNewBookingSlot(null)}
+          onCreate={handleCreateBooking}
+          onChangeSlot={(date, hour) => setNewBookingSlot({ date, hour })}
+        />
+      )}
+
+      {/* Students panel */}
+      {showStudents && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setShowStudents(false)}>
+          <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full p-6 relative max-h-[85vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <button onClick={() => setShowStudents(false)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><X size={20} /></button>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold text-primary">Students</h2>
+              <button
+                onClick={() => { setShowStudents(false); setShowAddStudent(true) }}
+                className="flex items-center gap-2 bg-secondary text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-secondary/90 transition-colors"
+              >
+                + Add Student
+              </button>
+            </div>
+
+            <div className="space-y-2">
+              {students.map((s) => (
+                <div key={s.id} className="flex items-center justify-between p-4 border border-gray-100 rounded-lg hover:bg-light transition-colors">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <p className="font-semibold text-primary">{s.name}</p>
+                      <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${
+                        s.status === 'active' ? 'bg-green-100 text-green-700' :
+                        s.status === 'completed' ? 'bg-blue-100 text-blue-700' :
+                        'bg-yellow-100 text-yellow-700'
+                      }`}>{s.status}</span>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1">{s.area} &middot; {LESSON_TYPE_LABELS[s.lessonType]} &middot; {s.lessonsCompleted} lessons &middot; £{s.totalPaid} paid</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {s.status === 'active' && (
+                      <button
+                        onClick={() => setStudents((prev) => prev.map((st) => st.id === s.id ? { ...st, status: 'completed' as const } : st))}
+                        className="text-xs text-gray-500 hover:text-secondary border border-gray-200 px-3 py-1.5 rounded-lg"
+                      >
+                        Mark Complete
+                      </button>
+                    )}
+                    {s.status !== 'active' && (
+                      <button
+                        onClick={() => setStudents((prev) => prev.map((st) => st.id === s.id ? { ...st, status: 'active' as const } : st))}
+                        className="text-xs text-gray-500 hover:text-secondary border border-gray-200 px-3 py-1.5 rounded-lg"
+                      >
+                        Reactivate
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add Student modal */}
+      {showAddStudent && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setShowAddStudent(false)}>
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 relative" onClick={(e) => e.stopPropagation()}>
+            <button onClick={() => setShowAddStudent(false)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><X size={20} /></button>
+            <h2 className="text-xl font-bold text-primary mb-6">Add New Student</h2>
+            <form onSubmit={(e) => {
+              e.preventDefault()
+              const fd = new FormData(e.currentTarget)
+              handleAddStudent({
+                name: fd.get('name') as string,
+                phone: fd.get('phone') as string,
+                email: fd.get('email') as string,
+                area: fd.get('area') as string,
+                lessonType: fd.get('lessonType') as Booking['lessonType'],
+                status: 'active',
+              })
+            }} className="space-y-4">
+              <div>
+                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1 block">Full Name *</label>
+                <input name="name" type="text" required placeholder="Student's full name" className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-secondary" autoFocus />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1 block">Phone</label>
+                  <input name="phone" type="tel" placeholder="07700 000000" className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-secondary" />
+                </div>
+                <div>
+                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1 block">Email</label>
+                  <input name="email" type="email" placeholder="student@email.com" className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-secondary" />
+                </div>
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1 block">Area</label>
+                <select name="area" className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-secondary">
+                  <option value="">Select area</option>
+                  {['North London', 'South London', 'East London', 'West London', 'Central London',
+                    'Croydon', 'Enfield', 'Bromley', 'Greenwich', 'Hackney', 'Lewisham',
+                    'Islington', 'Camden', 'Wandsworth', 'Barnet'].map((a) => (
+                    <option key={a} value={a}>{a}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1 block">Lesson Type</label>
+                <select name="lessonType" className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-secondary">
+                  {Object.entries(LESSON_TYPE_LABELS).map(([val, label]) => (
+                    <option key={val} value={val}>{label}</option>
+                  ))}
+                </select>
+              </div>
+              <button type="submit" className="w-full bg-secondary text-white py-3 rounded-lg font-semibold hover:bg-secondary/90 transition-colors">
+                Add Student
+              </button>
+            </form>
+          </div>
+        </div>
       )}
     </div>
   )

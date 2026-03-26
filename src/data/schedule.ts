@@ -4,8 +4,22 @@ export interface Payment {
   note: string
 }
 
+export interface Student {
+  id: string
+  name: string
+  phone: string
+  email: string
+  area: string
+  lessonType: 'automatic' | 'manual' | 'intensive' | 'test-prep' | 'motorway' | 'refresher'
+  status: 'active' | 'completed' | 'paused'
+  totalPaid: number
+  lessonsCompleted: number
+  createdAt: string
+}
+
 export interface Booking {
   id: string
+  studentId: string
   studentName: string
   phone: string
   email: string
@@ -18,6 +32,17 @@ export interface Booking {
   payments: Payment[]
 }
 
+export const MOCK_STUDENTS: Student[] = [
+  { id: 's1', name: 'Sarah Mitchell', phone: '07700 900123', email: 'sarah.m@email.com', area: 'North London', lessonType: 'automatic', status: 'active', totalPaid: 200, lessonsCompleted: 5, createdAt: '2026-03-01' },
+  { id: 's2', name: 'James Okonkwo', phone: '07700 900456', email: 'james.o@email.com', area: 'East London', lessonType: 'manual', status: 'active', totalPaid: 120, lessonsCompleted: 3, createdAt: '2026-03-05' },
+  { id: 's3', name: 'Priya Sharma', phone: '07700 900789', email: 'priya.s@email.com', area: 'Central London', lessonType: 'test-prep', status: 'active', totalPaid: 360, lessonsCompleted: 8, createdAt: '2026-02-10' },
+  { id: 's4', name: 'Tom Williams', phone: '07700 900321', email: 'tom.w@email.com', area: 'South London', lessonType: 'intensive', status: 'active', totalPaid: 0, lessonsCompleted: 0, createdAt: '2026-03-24' },
+  { id: 's5', name: 'Amara Johnson', phone: '07700 900654', email: 'amara.j@email.com', area: 'West London', lessonType: 'automatic', status: 'active', totalPaid: 160, lessonsCompleted: 4, createdAt: '2026-03-10' },
+  { id: 's6', name: 'Ryan Chen', phone: '07700 900987', email: 'ryan.c@email.com', area: 'Croydon', lessonType: 'motorway', status: 'active', totalPaid: 90, lessonsCompleted: 2, createdAt: '2026-03-15' },
+  { id: 's7', name: 'Fatima Ali', phone: '07700 900111', email: 'fatima.a@email.com', area: 'Islington', lessonType: 'refresher', status: 'completed', totalPaid: 280, lessonsCompleted: 7, createdAt: '2026-01-20' },
+  { id: 's8', name: 'Daniel Brown', phone: '07700 900222', email: 'daniel.b@email.com', area: 'Camden', lessonType: 'manual', status: 'paused', totalPaid: 80, lessonsCompleted: 2, createdAt: '2026-02-28' },
+]
+
 export type SlotState = 'available' | 'blocked'
 
 export interface DaySlots {
@@ -29,7 +54,8 @@ export interface WeekAvailability {
 }
 
 const today = new Date()
-const fmt = (d: Date) => d.toISOString().split('T')[0]
+const fmt = (d: Date) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 const addDays = (d: Date, n: number) => {
   const r = new Date(d)
   r.setDate(r.getDate() + n)
@@ -39,6 +65,7 @@ const addDays = (d: Date, n: number) => {
 export const MOCK_BOOKINGS: Booking[] = [
   {
     id: 'b1',
+    studentId: 's1',
     studentName: 'Sarah Mitchell',
     phone: '07700 900123',
     email: 'sarah.m@email.com',
@@ -52,6 +79,7 @@ export const MOCK_BOOKINGS: Booking[] = [
   },
   {
     id: 'b2',
+    studentId: 's2',
     studentName: 'James Okonkwo',
     phone: '07700 900456',
     email: 'james.o@email.com',
@@ -65,6 +93,7 @@ export const MOCK_BOOKINGS: Booking[] = [
   },
   {
     id: 'b3',
+    studentId: 's3',
     studentName: 'Priya Sharma',
     phone: '07700 900789',
     email: 'priya.s@email.com',
@@ -78,6 +107,7 @@ export const MOCK_BOOKINGS: Booking[] = [
   },
   {
     id: 'b4',
+    studentId: 's4',
     studentName: 'Tom Williams',
     phone: '07700 900321',
     email: 'tom.w@email.com',
@@ -91,6 +121,7 @@ export const MOCK_BOOKINGS: Booking[] = [
   },
   {
     id: 'b5',
+    studentId: 's5',
     studentName: 'Amara Johnson',
     phone: '07700 900654',
     email: 'amara.j@email.com',
@@ -104,6 +135,7 @@ export const MOCK_BOOKINGS: Booking[] = [
   },
   {
     id: 'b6',
+    studentId: 's6',
     studentName: 'Ryan Chen',
     phone: '07700 900987',
     email: 'ryan.c@email.com',
@@ -117,6 +149,7 @@ export const MOCK_BOOKINGS: Booking[] = [
   },
   {
     id: 'b7',
+    studentId: 's7',
     studentName: 'Fatima Ali',
     phone: '07700 900111',
     email: 'fatima.a@email.com',
@@ -130,6 +163,7 @@ export const MOCK_BOOKINGS: Booking[] = [
   },
   {
     id: 'b8',
+    studentId: 's8',
     studentName: 'Daniel Brown',
     phone: '07700 900222',
     email: 'daniel.b@email.com',
