@@ -34,19 +34,12 @@ function Header() {
     >
       <nav className="max-w-7xl mx-auto px-6 flex items-center justify-between h-20">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-0.5 shrink-0">
+        <Link to="/" className="flex items-center gap-1.5 shrink-0">
+          <div className="w-9 h-9 bg-secondary rounded-full flex items-center justify-center">
+            <span className="text-white font-bold text-base">W</span>
+          </div>
           <span className={`text-2xl font-bold tracking-tight transition-colors ${transparent ? 'text-white' : 'text-dark'}`}>
-            WeMake
-          </span>
-          <span className={`text-2xl font-bold tracking-tight relative transition-colors ${transparent ? 'text-white' : 'text-dark'}`}>
-            Dri
-            <span className="relative inline-block">
-              v
-              <span className="absolute -top-0.5 left-1/2 -translate-x-1/2 text-secondary text-[10px] leading-none font-black">
-                &#x2715;
-              </span>
-            </span>
-            ers
+            WeMake<span className="text-secondary">Drivers</span>
           </span>
         </Link>
 

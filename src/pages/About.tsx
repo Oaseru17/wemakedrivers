@@ -15,6 +15,7 @@ import {
 import PageBanner from '../components/shared/PageBanner'
 import SectionHeading from '../components/shared/SectionHeading'
 import { STATS, FEATURES, TEAM } from '../data/site'
+import SEO from '../components/shared/SEO'
 
 const SERVICES = [
   {
@@ -69,6 +70,11 @@ const FEATURE_ICONS = [Clock, CheckCircle, Users, BookOpen, Award, MapPin]
 function About() {
   return (
     <>
+      <SEO
+        title="About Us"
+        description="Meet the WeMake Drivers team. 15+ years of experience, 5,000+ happy drivers, and DVSA-approved instructors teaching across all London zones."
+        path="/about-us"
+      />
       <PageBanner title="About Us" />
 
       {/* Section 1 — About Intro + Stats */}

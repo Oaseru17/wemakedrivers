@@ -2,10 +2,16 @@ import { Calendar, Tag, ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import PageBanner from '../components/shared/PageBanner'
 import { BLOG_POSTS } from '../data/site'
+import SEO from '../components/shared/SEO'
 
 function Blog() {
   return (
     <>
+      <SEO
+        title="Blog"
+        description="Driving tips, test preparation advice, and London driving guides from WeMake Drivers. Expert insights to help you pass your test."
+        path="/blog"
+      />
       <PageBanner title="Blog" />
 
       <section className="py-20">

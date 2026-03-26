@@ -2,6 +2,7 @@ import { Phone, Users, MessageCircle, HeadphonesIcon, Send } from 'lucide-react'
 import PageBanner from '../components/shared/PageBanner'
 import SectionHeading from '../components/shared/SectionHeading'
 import { SITE, TEAM } from '../data/site'
+import SEO from '../components/shared/SEO'
 
 const contactMethods = [
   {
@@ -33,6 +34,11 @@ const contactMethods = [
 function Contact() {
   return (
     <>
+      <SEO
+        title="Contact Us"
+        description="Get in touch with WeMake Drivers. Call, email, or use our contact form to book driving lessons in London. We cover all London zones."
+        path="/contact-us"
+      />
       <PageBanner title="Contact Us" />
 
       {/* Contact Methods */}

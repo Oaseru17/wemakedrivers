@@ -23,6 +23,7 @@ import {
   MapPin,
 } from 'lucide-react'
 import SectionHeading from '../components/shared/SectionHeading'
+import SEO from '../components/shared/SEO'
 import { SITE, COURSES, TESTIMONIALS, BLOG_POSTS, HOW_IT_WORKS, FEATURES } from '../data/site'
 
 const ICON_MAP: Record<string, React.ReactNode> = {
@@ -63,6 +64,10 @@ const COURSE_CARD_GRADIENTS = [
 function Home() {
   return (
     <main>
+      <SEO
+        description="London's top-rated driving school. DVSA-approved instructors, 98% pass rate, flexible scheduling. Automatic & manual lessons across all London zones. Book today!"
+        path="/"
+      />
       {/* Section 1 — Hero */}
       <section className="relative min-h-[85vh] flex items-center overflow-hidden">
         <div

@@ -12,6 +12,7 @@ import {
 } from 'lucide-react'
 import PageBanner from '../components/shared/PageBanner'
 import { COURSES } from '../data/site'
+import SEO from '../components/shared/SEO'
 
 const ICON_MAP: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
   'user-check': UserCheck,
@@ -33,6 +34,11 @@ const ACCENT_STYLES = [
 function Courses() {
   return (
     <>
+      <SEO
+        title="Driving Courses"
+        description="Explore our driving courses: automatic, manual, intensive crash courses, test preparation, Pass Plus, motorway lessons and more. Book your London driving lessons today."
+        path="/courses"
+      />
       <PageBanner title="Courses" />
 
       <section className="py-20 bg-light">

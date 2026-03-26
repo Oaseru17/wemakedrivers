@@ -2,6 +2,7 @@ import { Calendar, Tag, ArrowLeft } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
 import PageBanner from '../components/shared/PageBanner'
 import { BLOG_POSTS } from '../data/site'
+import SEO from '../components/shared/SEO'
 
 function BlogPost() {
   const { slug } = useParams<{ slug: string }>()
@@ -28,6 +29,12 @@ function BlogPost() {
 
   return (
     <>
+      <SEO
+        title={post.title}
+        description={post.excerpt}
+        path={`/blog/${post.slug}`}
+        type="article"
+      />
       <PageBanner title={post.title} />
 
       <section className="py-20">
