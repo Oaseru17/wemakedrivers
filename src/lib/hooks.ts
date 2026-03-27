@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
-import { db } from './mongodb'
-import type { Student, Booking, BlockedSlot } from './types'
+import { api, IS_API_AVAILABLE } from './api'
+import { MOCK_STUDENTS, MOCK_BOOKINGS } from '../data/schedule'
+import type { Student, Booking } from '../data/schedule'
 
 const fmt = (d: Date) =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
@@ -11,32 +12,48 @@ export function useStudents() {
   const [students, setStudents] = useState<Student[]>([])
   const [loading, setLoading] = useState(true)
 
-  const fetch = useCallback(async () => {
-    try {
-      const { documents } = await db.find<Student>('students', {}, { created_at: -1 })
-      if (documents) setStudents(documents)
-    } catch (e) {
-      console.error('Failed to fetch students:', e)
+  const fetchStudents = useCallback(async () => {
+    if (IS_API_AVAILABLE) {
+      try {
+        const data = await api.get<Student[]>('/students')
+        setStudents(data)
+      } catch (e) {
+        console.error('Failed to fetch students:', e)
+        setStudents(MOCK_STUDENTS)
+      }
+    } else {
+      setStudents(MOCK_STUDENTS)
     }
     setLoading(false)
   }, [])
 
-  useEffect(() => { fetch() }, [fetch])
+  useEffect(() => { fetchStudents() }, [fetchStudents])
 
-  const addStudent = async (student: Omit<Student, '_id' | 'created_at'>) => {
-    const doc = { ...student, created_at: new Date().toISOString() }
-    const { insertedId } = await db.insertOne('students', doc)
-    const newStudent = { ...doc, _id: insertedId! } as Student
+  const addStudent = async (student: Omit<Student, 'id' | 'createdAt'>) => {
+    if (IS_API_AVAILABLE) {
+      const data = await api.post<Student>('/students', student)
+      setStudents((prev) => [data, ...prev])
+      return data
+    }
+    const newStudent = {
+      ...student,
+      id: `s${Date.now()}`,
+      createdAt: new Date().toISOString(),
+      totalPaid: 0,
+      lessonsCompleted: 0,
+    } as Student
     setStudents((prev) => [newStudent, ...prev])
     return newStudent
   }
 
   const updateStudent = async (id: string, updates: Partial<Student>) => {
-    await db.updateOne('students', { _id: { $oid: id } }, { $set: updates })
-    setStudents((prev) => prev.map((s) => s._id === id ? { ...s, ...updates } : s))
+    if (IS_API_AVAILABLE) {
+      await api.patch('/students', { id, ...updates })
+    }
+    setStudents((prev) => prev.map((s) => s.id === id ? { ...s, ...updates } : s))
   }
 
-  return { students, loading, addStudent, updateStudent, refetch: fetch }
+  return { students, loading, addStudent, updateStudent, refetch: fetchStudents }
 }
 
 // --- Bookings ---
@@ -48,44 +65,58 @@ export function useBookings(weekDates: Date[]) {
   const startDate = weekDates.length > 0 ? fmt(weekDates[0]) : ''
   const endDate = weekDates.length > 0 ? fmt(weekDates[6]) : ''
 
-  const fetch = useCallback(async () => {
+  const fetchBookings = useCallback(async () => {
     if (!startDate || !endDate) return
-    try {
-      const { documents } = await db.find<Booking>('bookings', {
-        date: { $gte: startDate, $lte: endDate },
-      })
-      if (documents) setBookings(documents)
-    } catch (e) {
-      console.error('Failed to fetch bookings:', e)
+    if (IS_API_AVAILABLE) {
+      try {
+        const data = await api.get<Booking[]>(`/bookings?start=${startDate}&end=${endDate}`)
+        setBookings(data)
+      } catch (e) {
+        console.error('Failed to fetch bookings:', e)
+        setBookings(MOCK_BOOKINGS.filter((b) => b.date >= startDate && b.date <= endDate && b.status !== 'cancelled'))
+      }
+    } else {
+      setBookings(MOCK_BOOKINGS.filter((b) => b.date >= startDate && b.date <= endDate && b.status !== 'cancelled'))
     }
     setLoading(false)
   }, [startDate, endDate])
 
-  useEffect(() => { fetch() }, [fetch])
+  useEffect(() => { fetchBookings() }, [fetchBookings])
 
   const createBooking = async (booking: {
-    student_id: string
-    student_name: string
-    student_phone: string
-    student_area: string
+    studentId: string
+    studentName: string
+    phone: string
+    email: string
+    area: string
+    lessonType: Booking['lessonType']
+    lessonRate: number
     date: string
     hour: number
-    lesson_type: string
-    rate: number
   }) => {
-    const doc = { ...booking, status: 'confirmed', created_at: new Date().toISOString() }
-    const { insertedId } = await db.insertOne('bookings', doc)
-    const newBooking = { ...doc, _id: insertedId! } as Booking
+    const newBooking: Booking = {
+      id: `b${Date.now()}`,
+      ...booking,
+      status: 'confirmed',
+      payments: [],
+    }
+    if (IS_API_AVAILABLE) {
+      const data = await api.post<Booking>('/bookings', booking)
+      setBookings((prev) => [...prev, data])
+      return data
+    }
     setBookings((prev) => [...prev, newBooking])
     return newBooking
   }
 
   const updateBooking = async (id: string, updates: { status?: string }) => {
-    await db.updateOne('bookings', { _id: { $oid: id } }, { $set: updates })
-    setBookings((prev) => prev.map((b) => b._id === id ? { ...b, ...updates } as Booking : b))
+    if (IS_API_AVAILABLE) {
+      await api.patch('/bookings', { id, ...updates })
+    }
+    setBookings((prev) => prev.map((b) => b.id === id ? { ...b, ...updates } as Booking : b))
   }
 
-  return { bookings, loading, createBooking, updateBooking, refetch: fetch }
+  return { bookings, loading, createBooking, updateBooking, refetch: fetchBookings }
 }
 
 // --- Upcoming bookings ---
@@ -93,56 +124,70 @@ export function useBookings(weekDates: Date[]) {
 export function useUpcomingBookings() {
   const [bookings, setBookings] = useState<Booking[]>([])
 
-  const fetch = useCallback(async () => {
+  const fetchUpcoming = useCallback(async () => {
     const today = fmt(new Date())
-    try {
-      const { documents } = await db.find<Booking>(
-        'bookings',
-        { date: { $gte: today }, status: 'confirmed' },
-        { date: 1, hour: 1 },
-        8,
-      )
-      if (documents) setBookings(documents)
-    } catch (e) {
-      console.error('Failed to fetch upcoming:', e)
+    if (IS_API_AVAILABLE) {
+      try {
+        const data = await api.get<Booking[]>('/bookings?upcoming=true')
+        setBookings(data)
+        return
+      } catch (e) {
+        console.error('Failed to fetch upcoming:', e)
+      }
     }
+    setBookings(
+      MOCK_BOOKINGS
+        .filter((b) => b.date >= today && b.status === 'confirmed')
+        .sort((a, b) => a.date.localeCompare(b.date) || a.hour - b.hour)
+        .slice(0, 8)
+    )
   }, [])
 
-  useEffect(() => { fetch() }, [fetch])
+  useEffect(() => { fetchUpcoming() }, [fetchUpcoming])
 
-  return { bookings, refetch: fetch }
+  return { bookings, refetch: fetchUpcoming }
 }
 
 // --- Blocked Slots ---
 
+export interface BlockedSlotLocal {
+  id: string
+  date: string
+  hour: number
+}
+
 export function useBlockedSlots(weekDates: Date[]) {
-  const [blocked, setBlocked] = useState<BlockedSlot[]>([])
+  const [blocked, setBlocked] = useState<BlockedSlotLocal[]>([])
 
   const startDate = weekDates.length > 0 ? fmt(weekDates[0]) : ''
   const endDate = weekDates.length > 0 ? fmt(weekDates[6]) : ''
 
-  const fetch = useCallback(async () => {
+  const fetchBlocked = useCallback(async () => {
     if (!startDate || !endDate) return
-    try {
-      const { documents } = await db.find<BlockedSlot>('blocked_slots', {
-        date: { $gte: startDate, $lte: endDate },
-      })
-      if (documents) setBlocked(documents)
-    } catch (e) {
-      console.error('Failed to fetch blocked slots:', e)
+    if (IS_API_AVAILABLE) {
+      try {
+        const data = await api.get<BlockedSlotLocal[]>(`/blocked-slots?start=${startDate}&end=${endDate}`)
+        setBlocked(data)
+      } catch {
+        setBlocked([])
+      }
     }
   }, [startDate, endDate])
 
-  useEffect(() => { fetch() }, [fetch])
+  useEffect(() => { fetchBlocked() }, [fetchBlocked])
 
   const toggleBlock = async (date: string, hour: number) => {
     const existing = blocked.find((b) => b.date === date && b.hour === hour)
     if (existing) {
-      await db.deleteOne('blocked_slots', { _id: { $oid: existing._id } })
-      setBlocked((prev) => prev.filter((b) => b._id !== existing._id))
+      if (IS_API_AVAILABLE) await api.del('/blocked-slots', { id: existing.id })
+      setBlocked((prev) => prev.filter((b) => b.id !== existing.id))
     } else {
-      const { insertedId } = await db.insertOne('blocked_slots', { date, hour })
-      if (insertedId) setBlocked((prev) => [...prev, { _id: insertedId, date, hour }])
+      if (IS_API_AVAILABLE) {
+        const data = await api.post<BlockedSlotLocal>('/blocked-slots', { date, hour })
+        setBlocked((prev) => [...prev, data])
+      } else {
+        setBlocked((prev) => [...prev, { id: `bl${Date.now()}`, date, hour }])
+      }
     }
   }
 

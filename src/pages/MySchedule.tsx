@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import {
   ChevronLeft,
   ChevronRight,
@@ -16,13 +16,12 @@ import {
   Lock,
 } from 'lucide-react'
 import {
-  MOCK_BOOKINGS,
-  MOCK_STUDENTS,
   HOURS,
   LESSON_TYPE_LABELS,
   ACCESS_CODE,
 } from '../data/schedule'
 import type { Booking, Student } from '../data/schedule'
+import { useStudents, useBookings, useUpcomingBookings, useBlockedSlots } from '../lib/hooks'
 import SEO from '../components/shared/SEO'
 
 const fmt = (d: Date) =>
@@ -489,10 +488,7 @@ function NewBookingModal({
 
 function Dashboard() {
   const [weekOffset, setWeekOffset] = useState(0)
-  const [bookings, setBookings] = useState<Booking[]>(MOCK_BOOKINGS)
-  const [students, setStudents] = useState<Student[]>(MOCK_STUDENTS)
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null)
-  const [blockedSlots, setBlockedSlots] = useState<Record<string, boolean>>({})
   const [newBookingSlot, setNewBookingSlot] = useState<{ date: string; hour: number } | null>(null)
   const [showStudents, setShowStudents] = useState(false)
   const [showAddStudent, setShowAddStudent] = useState(false)
@@ -506,88 +502,62 @@ function Dashboard() {
   const weekDates = useMemo(() => getWeekDates(baseDate), [baseDate])
   const todayStr = fmt(new Date())
 
-  const weekBookings = useMemo(() => {
-    const dateStrs = weekDates.map(fmt)
-    return bookings.filter((b) => dateStrs.includes(b.date) && b.status !== 'cancelled')
-  }, [bookings, weekDates])
+  const { students, addStudent, updateStudent } = useStudents()
+  const { bookings: weekBookings, createBooking, updateBooking } = useBookings(weekDates)
+  const { bookings: upcomingBookings } = useUpcomingBookings()
+  const { isBlocked, toggleBlock } = useBlockedSlots(weekDates)
 
-  const upcomingBookings = useMemo(() => {
-    return bookings
-      .filter((b) => b.date >= todayStr && b.status === 'confirmed')
-      .sort((a, b) => a.date.localeCompare(b.date) || a.hour - b.hour)
-      .slice(0, 6)
-  }, [bookings, todayStr])
+  const blockedCount = 0
 
   const weekStats = useMemo(() => {
     const confirmed = weekBookings.filter((b) => b.status === 'confirmed').length
-    const total = weekDates.length * HOURS.length
-    const blocked = Object.keys(blockedSlots).filter((k) => {
-      const [date] = k.split('-h')
-      return weekDates.map(fmt).includes(date) && blockedSlots[k]
-    }).length
-    return { confirmed, available: total - confirmed - blocked, blocked }
-  }, [weekBookings, weekDates, blockedSlots])
+    return { confirmed, blocked: blockedCount }
+  }, [weekBookings, blockedCount])
 
-  const getBookingAt = (date: string, hour: number) =>
-    weekBookings.find((b) => b.date === date && b.hour === hour)
+  const getBookingAt = useCallback((date: string, hour: number) =>
+    weekBookings.find((b) => b.date === date && b.hour === hour),
+  [weekBookings])
 
-  const isBlocked = (date: string, hour: number) =>
-    blockedSlots[`${date}-h${hour}`] === true
-
-  const toggleBlock = (date: string, hour: number) => {
-    const key = `${date}-h${hour}`
-    setBlockedSlots((prev) => ({ ...prev, [key]: !prev[key] }))
-  }
-
-  const handleCancel = (id: string) => {
-    setBookings((prev) => prev.map((b) => b.id === id ? { ...b, status: 'cancelled' as const } : b))
+  const handleCancel = async (id: string) => {
+    await updateBooking(id, { status: 'cancelled' })
     setSelectedBooking(null)
   }
 
-  const handleNoShow = (id: string) => {
-    setBookings((prev) => prev.map((b) => b.id === id ? { ...b, status: 'no-show' as const } : b))
+  const handleNoShow = async (id: string) => {
+    await updateBooking(id, { status: 'no-show' })
     setSelectedBooking(null)
   }
 
-  const handleCreateBooking = (data: {
+  const handleCreateBooking = async (data: {
     studentId: string; studentName: string; phone: string; email: string; area: string;
     lessonType: Booking['lessonType']; lessonRate: number;
   }) => {
     if (!newBookingSlot) return
-    const newBooking: Booking = {
-      id: `b${Date.now()}`,
+    await createBooking({
       ...data,
-      status: 'confirmed',
       date: newBookingSlot.date,
       hour: newBookingSlot.hour,
-      payments: [],
-    }
-    setBookings((prev) => [...prev, newBooking])
+    })
     setNewBookingSlot(null)
   }
 
-  const handleAddStudent = (data: Omit<Student, 'id' | 'totalPaid' | 'lessonsCompleted' | 'createdAt'>) => {
-    const newStudent: Student = {
+  const handleAddStudent = async (data: Omit<Student, 'id' | 'totalPaid' | 'lessonsCompleted' | 'createdAt'>) => {
+    await addStudent({
       ...data,
-      id: `s${Date.now()}`,
       totalPaid: 0,
       lessonsCompleted: 0,
-      createdAt: fmt(new Date()),
-    }
-    setStudents((prev) => [...prev, newStudent])
+    } as Omit<Student, 'id' | 'createdAt'>)
     setShowAddStudent(false)
   }
 
   const handleAddPayment = (id: string, amount: number, note: string) => {
-    setBookings((prev) => prev.map((b) => {
-      if (b.id !== id) return b
-      const updated = {
-        ...b,
-        payments: [...b.payments, { amount, date: fmt(new Date()), note }],
-      }
-      setSelectedBooking(updated)
-      return updated
-    }))
+    const booking = weekBookings.find((b) => b.id === id)
+    if (!booking) return
+    const updated = {
+      ...booking,
+      payments: [...booking.payments, { amount, date: fmt(new Date()), note }],
+    }
+    setSelectedBooking(updated)
   }
 
   const weekLabel = `${weekDates[0].toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })} — ${weekDates[6].toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`
@@ -758,7 +728,7 @@ function Dashboard() {
                 Today
               </h3>
               {(() => {
-                const todayBookings = bookings.filter((b) => b.date === todayStr && b.status === 'confirmed')
+                const todayBookings = weekBookings.filter((b: Booking) => b.date === todayStr && b.status === 'confirmed')
                 if (todayBookings.length === 0) {
                   return <p className="text-gray-400 text-sm">No lessons today</p>
                 }
@@ -770,7 +740,7 @@ function Dashboard() {
                     </p>
                     <div className="flex gap-1 mt-2">
                       {HOURS.map((h) => {
-                        const hasBooking = todayBookings.some((b) => b.hour === h)
+                        const hasBooking = todayBookings.some((b: Booking) => b.hour === h)
                         return (
                           <div
                             key={h}
@@ -837,7 +807,7 @@ function Dashboard() {
           hours={HOURS}
           weekDates={weekDates}
           students={students}
-          existingBookings={bookings}
+          existingBookings={weekBookings}
           onClose={() => setNewBookingSlot(null)}
           onCreate={handleCreateBooking}
           onChangeSlot={(date, hour) => setNewBookingSlot({ date, hour })}
@@ -876,7 +846,7 @@ function Dashboard() {
                   <div className="flex items-center gap-2">
                     {s.status === 'active' && (
                       <button
-                        onClick={() => setStudents((prev) => prev.map((st) => st.id === s.id ? { ...st, status: 'completed' as const } : st))}
+                        onClick={() => updateStudent(s.id, { status: 'completed' as const })}
                         className="text-xs text-gray-500 hover:text-secondary border border-gray-200 px-3 py-1.5 rounded-lg"
                       >
                         Mark Complete
@@ -884,7 +854,7 @@ function Dashboard() {
                     )}
                     {s.status !== 'active' && (
                       <button
-                        onClick={() => setStudents((prev) => prev.map((st) => st.id === s.id ? { ...st, status: 'active' as const } : st))}
+                        onClick={() => updateStudent(s.id, { status: 'active' as const })}
                         className="text-xs text-gray-500 hover:text-secondary border border-gray-200 px-3 py-1.5 rounded-lg"
                       >
                         Reactivate
