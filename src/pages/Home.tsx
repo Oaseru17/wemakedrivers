@@ -1,3 +1,4 @@
+import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import {
   UserCheck,
@@ -22,10 +23,13 @@ import {
   Map,
   MapPin,
   MessageCircle,
+  Loader2,
+  CheckCircle2,
 } from 'lucide-react'
 import SectionHeading from '../components/shared/SectionHeading'
 import SEO from '../components/shared/SEO'
 import { SITE, COURSES, TESTIMONIALS, BLOG_POSTS, HOW_IT_WORKS, FEATURES } from '../data/site'
+import { trackEvent } from '../lib/analytics'
 
 const ICON_MAP: Record<string, React.ReactNode> = {
   'user-check': <UserCheck size={28} />,
@@ -62,11 +66,45 @@ const COURSE_CARD_IMAGES = [
   '/images/course-4.jpg',
 ]
 
+type FormStatus = 'idle' | 'sending' | 'sent' | 'error'
+
 function Home() {
+  const [formStatus, setFormStatus] = useState<FormStatus>('idle')
+
+  async function handleHeroSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    const form = e.currentTarget
+    setFormStatus('sending')
+
+    const fd = new FormData(form)
+    const payload = {
+      source: 'hero' as const,
+      name: fd.get('name') as string,
+      email: fd.get('email') as string,
+      phone: fd.get('phone') as string,
+      area: fd.get('area') as string,
+      postcode: fd.get('postcode') as string,
+    }
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      if (!res.ok) throw new Error('Failed to send')
+      setFormStatus('sent')
+      trackEvent('generate_lead', { event_category: 'engagement', event_label: 'hero_form' })
+      form.reset()
+    } catch {
+      setFormStatus('error')
+    }
+  }
+
   return (
     <main>
       <SEO
-        description="London's top-rated driving school. DVSA-approved instructors, 98% pass rate, flexible scheduling. Automatic & manual lessons across all London zones. Book today!"
+        description="Looking for driving lessons in London? WeMake Drivers offers DVSA-approved driving instructors with a 98% first-time pass rate. Book automatic or manual driving lessons across all London zones. Pass your driving test with confidence."
         path="/"
       />
       {/* Section 1 — Hero */}
@@ -112,52 +150,70 @@ function Home() {
             <div className="lg:col-span-2 lg:translate-y-32">
               <div className="bg-white rounded-lg p-8 shadow-xl">
                 <h3 className="text-xl font-bold text-primary mb-6">Start Your Journey</h3>
-                <form className="space-y-4">
+                <form className="space-y-4" onSubmit={handleHeroSubmit}>
                   <input
+                    name="name"
                     type="text"
                     placeholder="Full Name*"
+                    required
                     className="w-full border border-gray-300 rounded px-4 py-3 text-sm focus:outline-none focus:border-secondary transition-colors"
                   />
                   <input
+                    name="email"
                     type="email"
-                    placeholder="hello@drivingschool.com"
+                    placeholder="Email address"
                     className="w-full border border-gray-300 rounded px-4 py-3 text-sm focus:outline-none focus:border-secondary transition-colors"
                   />
                   <input
+                    name="phone"
                     type="tel"
                     placeholder="Phone Number*"
+                    required
                     className="w-full border border-gray-300 rounded px-4 py-3 text-sm focus:outline-none focus:border-secondary transition-colors"
                   />
                   <select
+                    name="area"
                     className="w-full border border-gray-300 rounded px-4 py-3 text-sm focus:outline-none focus:border-secondary transition-colors text-gray-500"
                     defaultValue=""
+                    required
                   >
                     <option value="" disabled>Select your area*</option>
-                    <option value="N">North London</option>
-                    <option value="S">South London</option>
-                    <option value="E">East London</option>
-                    <option value="W">West London</option>
-                    <option value="C">Central London</option>
-                    <option value="CR">Croydon</option>
-                    <option value="EN">Enfield</option>
-                    <option value="BR">Bromley</option>
-                    <option value="SE">Greenwich / Lewisham</option>
-                    <option value="N1">Islington / Camden</option>
-                    <option value="SW">Wandsworth</option>
-                    <option value="HA">Barnet / Harrow</option>
-                    <option value="other">Other (enter postcode below)</option>
+                    <option value="North London">North London</option>
+                    <option value="South London">South London</option>
+                    <option value="East London">East London</option>
+                    <option value="West London">West London</option>
+                    <option value="Central London">Central London</option>
+                    <option value="Croydon">Croydon</option>
+                    <option value="Enfield">Enfield</option>
+                    <option value="Bromley">Bromley</option>
+                    <option value="Greenwich / Lewisham">Greenwich / Lewisham</option>
+                    <option value="Islington / Camden">Islington / Camden</option>
+                    <option value="Wandsworth">Wandsworth</option>
+                    <option value="Barnet / Harrow">Barnet / Harrow</option>
+                    <option value="Other">Other (enter postcode below)</option>
                   </select>
                   <input
+                    name="postcode"
                     type="text"
                     placeholder="Or enter your postcode (e.g. SW1A 1AA)"
                     className="w-full border border-gray-300 rounded px-4 py-3 text-sm focus:outline-none focus:border-secondary transition-colors"
                   />
                   <button
                     type="submit"
-                    className="w-full bg-primary text-white py-3.5 rounded font-semibold uppercase tracking-wider text-sm hover:bg-accent transition-colors"
+                    disabled={formStatus === 'sending'}
+                    className="w-full bg-primary text-white py-3.5 rounded font-semibold uppercase tracking-wider text-sm hover:bg-accent transition-colors disabled:opacity-60"
                   >
-                    Get Started
+                    {formStatus === 'sending' && <Loader2 size={16} className="inline animate-spin mr-2" />}
+                    {formStatus === 'sent' ? 'Sent!' : formStatus === 'error' ? 'Try Again' : 'Get Started'}
                   </button>
+                  {formStatus === 'sent' && (
+                    <p className="text-green-600 text-sm flex items-center gap-1.5">
+                      <CheckCircle2 size={14} /> We'll be in touch shortly.
+                    </p>
+                  )}
+                  {formStatus === 'error' && (
+                    <p className="text-red-500 text-sm">Something went wrong. Please try again or call us.</p>
+                  )}
                 </form>
               </div>
             </div>

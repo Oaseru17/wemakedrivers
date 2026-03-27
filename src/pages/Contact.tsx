@@ -1,8 +1,10 @@
-import { Phone, Users, MessageCircle, HeadphonesIcon, Send } from 'lucide-react'
+import { useState, type FormEvent } from 'react'
+import { Phone, Users, MessageCircle, HeadphonesIcon, Send, Loader2, CheckCircle2 } from 'lucide-react'
 import PageBanner from '../components/shared/PageBanner'
 import SectionHeading from '../components/shared/SectionHeading'
 import { SITE } from '../data/site'
 import SEO from '../components/shared/SEO'
+import { trackEvent } from '../lib/analytics'
 
 const contactMethods = [
   {
@@ -31,12 +33,46 @@ const contactMethods = [
   },
 ]
 
+type FormStatus = 'idle' | 'sending' | 'sent' | 'error'
+
 function Contact() {
+  const [formStatus, setFormStatus] = useState<FormStatus>('idle')
+
+  async function handleContactSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    const form = e.currentTarget
+    setFormStatus('sending')
+
+    const fd = new FormData(form)
+    const payload = {
+      source: 'contact' as const,
+      name: fd.get('name') as string,
+      email: fd.get('email') as string,
+      phone: fd.get('phone') as string,
+      subject: fd.get('subject') as string,
+      message: fd.get('message') as string,
+    }
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      if (!res.ok) throw new Error('Failed to send')
+      setFormStatus('sent')
+      trackEvent('contact', { event_category: 'engagement', event_label: 'contact_form' })
+      form.reset()
+    } catch {
+      setFormStatus('error')
+    }
+  }
+
   return (
     <>
       <SEO
         title="Contact Us"
-        description="Get in touch with WeMake Drivers. Call, email, or use our contact form to book driving lessons in London. We cover all London zones."
+        description="Contact WeMake Drivers to book driving lessons in London. Call, email, or WhatsApp us. DVSA-approved driving instructors covering North, South, East, West and Central London."
         path="/contact-us"
       />
       <PageBanner title="Contact Us" />
@@ -72,14 +108,17 @@ function Contact() {
                 title="Talk to us?"
                 description="You have questions and we have answers!"
               />
-              <form className="space-y-5">
+              <form className="space-y-5" onSubmit={handleContactSubmit}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <input
+                    name="name"
                     type="text"
-                    placeholder="Your Name"
+                    placeholder="Your Name*"
+                    required
                     className="w-full px-5 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-secondary transition-colors"
                   />
                   <input
+                    name="email"
                     type="email"
                     placeholder="Your Email"
                     className="w-full px-5 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-secondary transition-colors"
@@ -87,28 +126,41 @@ function Contact() {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <input
+                    name="phone"
                     type="tel"
-                    placeholder="Phone Number"
+                    placeholder="Phone Number*"
+                    required
                     className="w-full px-5 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-secondary transition-colors"
                   />
                   <input
+                    name="subject"
                     type="text"
                     placeholder="Subject"
                     className="w-full px-5 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-secondary transition-colors"
                   />
                 </div>
                 <textarea
+                  name="message"
                   placeholder="Your Message"
                   rows={5}
                   className="w-full px-5 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-secondary transition-colors resize-none"
                 />
                 <button
                   type="submit"
-                  className="bg-secondary hover:bg-secondary/90 text-white font-semibold px-8 py-3 rounded-lg flex items-center gap-2 transition-colors"
+                  disabled={formStatus === 'sending'}
+                  className="bg-secondary hover:bg-secondary/90 text-white font-semibold px-8 py-3 rounded-lg flex items-center gap-2 transition-colors disabled:opacity-60"
                 >
-                  <Send className="w-4 h-4" />
-                  Submit Message
+                  {formStatus === 'sending' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                  {formStatus === 'sent' ? 'Sent!' : formStatus === 'error' ? 'Try Again' : 'Submit Message'}
                 </button>
+                {formStatus === 'sent' && (
+                  <p className="text-green-600 text-sm flex items-center gap-1.5">
+                    <CheckCircle2 size={14} /> Thanks for your message. We'll get back to you soon.
+                  </p>
+                )}
+                {formStatus === 'error' && (
+                  <p className="text-red-500 text-sm">Something went wrong. Please try again or call us.</p>
+                )}
               </form>
             </div>
 

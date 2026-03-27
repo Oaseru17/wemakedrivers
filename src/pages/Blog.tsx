@@ -9,7 +9,7 @@ function Blog() {
     <>
       <SEO
         title="Blog"
-        description="Driving tips, test preparation advice, and London driving guides from WeMake Drivers. Expert insights to help you pass your test."
+        description="Driving tips, driving test preparation advice, and London driving guides. Expert insights from DVSA-approved instructors to help you pass your driving test first time."
         path="/blog"
       />
       <PageBanner title="Blog" />

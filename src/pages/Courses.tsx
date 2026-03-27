@@ -36,7 +36,7 @@ function Courses() {
     <>
       <SEO
         title="Driving Courses"
-        description="Explore our driving courses: automatic, manual, intensive crash courses, test preparation, Pass Plus, motorway lessons and more. Book your London driving lessons today."
+        description="Driving courses in London: automatic lessons, manual lessons, intensive crash courses, driving test preparation, Pass Plus, motorway lessons and refresher courses. DVSA-approved instructors, 98% pass rate."
         path="/courses"
       />
       <PageBanner title="Courses" />

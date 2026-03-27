@@ -70,7 +70,7 @@ function About() {
     <>
       <SEO
         title="About Us"
-        description="Meet the WeMake Drivers team. 15+ years of experience, 5,000+ happy drivers, and DVSA-approved instructors teaching across all London zones."
+        description="About WeMake Drivers — London's trusted driving school with 15+ years experience. 5,000+ learners passed, DVSA-approved driving instructors across all London zones. Learn to drive with confidence."
         path="/about-us"
       />
       <PageBanner title="About Us" />

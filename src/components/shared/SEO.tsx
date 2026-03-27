@@ -42,6 +42,15 @@ function SEO({
     setMeta('twitter:title', fullTitle)
     setMeta('twitter:description', description)
     setMeta('robots', 'index, follow')
+    setMeta('keywords', 'driving lessons London, driving instructor London, learn to drive London, pass driving test, driving school London, automatic driving lessons, manual driving lessons, DVSA approved instructor')
+
+    let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null
+    if (!canonical) {
+      canonical = document.createElement('link')
+      canonical.rel = 'canonical'
+      document.head.appendChild(canonical)
+    }
+    canonical.href = url
   }, [fullTitle, description, url, type])
 
   return null

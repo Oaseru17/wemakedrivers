@@ -2,6 +2,7 @@ import { Outlet, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import Header from './Header'
 import Footer from './Footer'
+import { trackPageView } from '../../lib/analytics'
 
 function Layout() {
   const { pathname } = useLocation()
@@ -9,6 +10,7 @@ function Layout() {
 
   useEffect(() => {
     window.scrollTo(0, 0)
+    trackPageView(pathname)
   }, [pathname])
 
   return (
