@@ -9,29 +9,14 @@ export const SITE = {
   reviewCount: 312,
 }
 
-export const NAV_LINKS = [
+export const NAV_LINKS: { label: string; path: string; children?: { label: string; path: string }[] }[] = [
   { label: 'Home', path: '/' },
   { label: 'About Us', path: '/about-us' },
   { label: 'Courses', path: '/courses' },
-  {
-    label: 'Blog',
-    path: '/blog',
-    children: [
-      { label: 'Blog Grid', path: '/blog' },
-      { label: 'Blog List', path: '/blog/list' },
-      { label: 'Blog Post', path: '/blog/choosing-the-right-instructor' },
-    ],
-  },
   { label: 'Contact Us', path: '/contact-us' },
 ]
 
 export const COURSES = [
-  {
-    id: 'choosing-instructor',
-    title: 'Find Your Perfect Instructor',
-    description: "You'll be matched with an instructor who fits your personality and learning style — so every lesson feels comfortable.",
-    icon: 'user-check',
-  },
   {
     id: 'automatic-lessons',
     title: 'Automatic Driving Lessons',

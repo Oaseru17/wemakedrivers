@@ -1,3 +1,5 @@
+type LessonType = 'automatic' | 'manual' | 'intensive' | 'test-prep' | 'motorway' | 'refresher'
+
 export interface Database {
   public: {
     Tables: {
@@ -8,15 +10,28 @@ export interface Database {
           phone: string
           email: string
           area: string
-          lesson_type: 'automatic' | 'manual' | 'intensive' | 'test-prep' | 'motorway' | 'refresher'
+          lesson_type: LessonType
           status: 'active' | 'completed' | 'paused'
           created_at: string
         }
-        Insert: Omit<Database['public']['Tables']['students']['Row'], 'id' | 'created_at'> & {
+        Insert: {
           id?: string
+          name: string
+          phone?: string
+          email?: string
+          area?: string
+          lesson_type?: LessonType
+          status?: 'active' | 'completed' | 'paused'
           created_at?: string
         }
-        Update: Partial<Database['public']['Tables']['students']['Insert']>
+        Update: {
+          name?: string
+          phone?: string
+          email?: string
+          area?: string
+          lesson_type?: LessonType
+          status?: 'active' | 'completed' | 'paused'
+        }
       }
       bookings: {
         Row: {
@@ -24,16 +39,29 @@ export interface Database {
           student_id: string
           date: string
           hour: number
-          lesson_type: 'automatic' | 'manual' | 'intensive' | 'test-prep' | 'motorway' | 'refresher'
+          lesson_type: LessonType
           status: 'confirmed' | 'cancelled' | 'no-show' | 'completed'
           rate: number
           created_at: string
         }
-        Insert: Omit<Database['public']['Tables']['bookings']['Row'], 'id' | 'created_at'> & {
+        Insert: {
           id?: string
+          student_id: string
+          date: string
+          hour: number
+          lesson_type?: LessonType
+          status?: 'confirmed' | 'cancelled' | 'no-show' | 'completed'
+          rate?: number
           created_at?: string
         }
-        Update: Partial<Database['public']['Tables']['bookings']['Insert']>
+        Update: {
+          student_id?: string
+          date?: string
+          hour?: number
+          lesson_type?: LessonType
+          status?: 'confirmed' | 'cancelled' | 'no-show' | 'completed'
+          rate?: number
+        }
       }
       blocked_slots: {
         Row: {
@@ -41,10 +69,15 @@ export interface Database {
           date: string
           hour: number
         }
-        Insert: Omit<Database['public']['Tables']['blocked_slots']['Row'], 'id'> & {
+        Insert: {
           id?: string
+          date: string
+          hour: number
         }
-        Update: Partial<Database['public']['Tables']['blocked_slots']['Insert']>
+        Update: {
+          date?: string
+          hour?: number
+        }
       }
     }
   }

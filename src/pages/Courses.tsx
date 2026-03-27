@@ -63,10 +63,10 @@ function Courses() {
                     <h3 className="text-lg font-bold text-primary mb-3">{course.title}</h3>
                     <p className="text-gray-600 text-sm leading-relaxed mb-6">{course.description}</p>
                     <Link
-                      to={`/courses/${course.id}`}
+                      to="/contact-us"
                       className="inline-flex items-center gap-1.5 text-secondary font-semibold text-sm hover:gap-3 transition-all duration-300"
                     >
-                      Learn More <ArrowRight size={16} />
+                      Book Now <ArrowRight size={16} />
                     </Link>
                   </div>
                 </div>

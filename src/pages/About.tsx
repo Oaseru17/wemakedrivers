@@ -9,12 +9,10 @@ import {
   BookOpen,
   MapPin,
   CheckCircle,
-  ExternalLink,
-  Mail,
 } from 'lucide-react'
 import PageBanner from '../components/shared/PageBanner'
 import SectionHeading from '../components/shared/SectionHeading'
-import { STATS, FEATURES, TEAM } from '../data/site'
+import { STATS, FEATURES } from '../data/site'
 import SEO from '../components/shared/SEO'
 
 const SERVICES = [
@@ -247,62 +245,6 @@ function About() {
         </div>
       </section>
 
-      {/* Section 5 — Meet Our Instructors */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <SectionHeading
-            subtitle="HELPING CLIENTS"
-            title="Meet Our Instructors"
-            description="Our team of experienced, DVSA-approved instructors are here to guide you every step of the way."
-            center
-          />
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {TEAM.map((member) => (
-              <div
-                key={member.name}
-                className="bg-light rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow group"
-              >
-                <div className="h-64 bg-gradient-to-br from-accent to-primary flex items-center justify-center">
-                  <div className="w-28 h-28 rounded-full bg-white/10 border-4 border-white/20 flex items-center justify-center">
-                    <Users className="w-12 h-12 text-white/60" />
-                  </div>
-                </div>
-
-                <div className="p-6 text-center">
-                  <h3 className="text-xl font-bold text-primary">
-                    {member.name}
-                  </h3>
-                  <p className="text-secondary text-sm font-medium mt-1">
-                    {member.role}
-                  </p>
-
-                  <div className="flex items-center justify-center gap-3 mt-4">
-                    <a
-                      href="#"
-                      className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center hover:bg-secondary hover:text-white transition-colors text-primary"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                    </a>
-                    <a
-                      href="#"
-                      className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center hover:bg-secondary hover:text-white transition-colors text-primary"
-                    >
-                      <Mail className="w-4 h-4" />
-                    </a>
-                    <a
-                      href="#"
-                      className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center hover:bg-secondary hover:text-white transition-colors text-primary"
-                    >
-                      <Users className="w-4 h-4" />
-                    </a>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
     </>
   )
 }

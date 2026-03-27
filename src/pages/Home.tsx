@@ -83,18 +83,6 @@ function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-end">
             {/* Left — Hero text */}
             <div className="lg:col-span-3">
-              <div className="flex items-center gap-6 mb-10">
-                <button className="text-white text-sm font-semibold tracking-wide pb-1 border-b-2 border-secondary">
-                  School
-                </button>
-                <button className="text-white/60 text-sm font-semibold tracking-wide pb-1 border-b-2 border-transparent hover:text-white transition-colors">
-                  Drive
-                </button>
-                <button className="text-white/60 text-sm font-semibold tracking-wide pb-1 border-b-2 border-transparent hover:text-white transition-colors">
-                  Insurance
-                </button>
-              </div>
-
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6 max-w-2xl">
                 Pass First Time.<br />Drive For Life.
               </h1>
@@ -338,21 +326,7 @@ function Home() {
         </div>
       </section>
 
-      {/* Section 8 — Partner Logos */}
-      <section className="bg-white py-12 border-t border-gray-200">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center">
-            {['Partner 1', 'Partner 2', 'Partner 3', 'Partner 4'].map((partner) => (
-              <span
-                key={partner}
-                className="text-gray-400 text-lg font-semibold tracking-wide"
-              >
-                {partner}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
+
 
       {/* Section 9 — Instructor Bio */}
       <section className="bg-white py-20">

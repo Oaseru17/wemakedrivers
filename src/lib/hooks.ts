@@ -28,13 +28,13 @@ export function useStudents() {
   }, [fetch])
 
   const addStudent = async (student: Omit<Student, 'id' | 'created_at'>) => {
-    const { data, error } = await supabase.from('students').insert(student).select().single()
+    const { data, error } = await supabase.from('students').insert(student as never).select().single()
     if (error) throw error
     return data
   }
 
   const updateStudent = async (id: string, updates: Partial<Student>) => {
-    const { error } = await supabase.from('students').update(updates).eq('id', id)
+    const { error } = await supabase.from('students').update(updates as never).eq('id', id)
     if (error) throw error
   }
 
@@ -77,7 +77,7 @@ export function useBookings(weekDates: Date[]) {
   }) => {
     const { data, error } = await supabase
       .from('bookings')
-      .insert({ ...booking, status: 'confirmed' })
+      .insert({ ...booking, status: 'confirmed' } as never)
       .select('*, students(*)')
       .single()
     if (error) throw error
@@ -85,7 +85,7 @@ export function useBookings(weekDates: Date[]) {
   }
 
   const updateBooking = async (id: string, updates: { status?: string }) => {
-    const { error } = await supabase.from('bookings').update(updates).eq('id', id)
+    const { error } = await supabase.from('bookings').update(updates as never).eq('id', id)
     if (error) throw error
   }
 
@@ -146,7 +146,7 @@ export function useBlockedSlots(weekDates: Date[]) {
       await supabase.from('blocked_slots').delete().eq('id', existing.id)
       setBlocked((prev) => prev.filter((b) => b.id !== existing.id))
     } else {
-      const { data } = await supabase.from('blocked_slots').insert({ date, hour }).select().single()
+      const { data } = await supabase.from('blocked_slots').insert({ date, hour } as never).select().single()
       if (data) setBlocked((prev) => [...prev, data])
     }
   }

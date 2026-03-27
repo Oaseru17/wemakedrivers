@@ -1,7 +1,7 @@
 import { Phone, Users, MessageCircle, HeadphonesIcon, Send } from 'lucide-react'
 import PageBanner from '../components/shared/PageBanner'
 import SectionHeading from '../components/shared/SectionHeading'
-import { SITE, TEAM } from '../data/site'
+import { SITE } from '../data/site'
 import SEO from '../components/shared/SEO'
 
 const contactMethods = [
@@ -130,29 +130,27 @@ function Contact() {
         </div>
       </section>
 
-      {/* Team Contacts */}
-      <section className="py-20 bg-light">
-        <div className="max-w-7xl mx-auto px-4">
-          <SectionHeading
-            subtitle="Our Team"
-            title="Meet the Instructors"
-            description="Book a lesson with one of our experienced, DVSA-approved instructors."
-            center
-          />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {TEAM.map((member) => (
-              <div
-                key={member.name}
-                className="bg-white rounded-xl p-8 text-center shadow-sm hover:shadow-lg transition-shadow"
-              >
-                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-secondary to-accent mx-auto mb-5" />
-                <h3 className="text-lg font-bold text-primary mb-1">{member.name}</h3>
-                <p className="text-secondary text-sm font-medium mb-3">{member.role}</p>
-                <p className="text-gray-600 text-sm">
-                  Use our online booking system to schedule lessons with {member.name.split(' ')[0]} at a time that suits you.
-                </p>
-              </div>
-            ))}
+      {/* WhatsApp CTA */}
+      <section className="py-16 bg-light">
+        <div className="max-w-2xl mx-auto px-4 text-center">
+          <div className="bg-white rounded-2xl shadow-sm p-10">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6" style={{ backgroundColor: '#25D366' }}>
+              <MessageCircle size={28} className="text-white" />
+            </div>
+            <h2 className="text-2xl font-bold text-primary mb-3">Prefer WhatsApp?</h2>
+            <p className="text-gray-500 mb-6">
+              Message us directly — we usually reply within minutes.
+            </p>
+            <a
+              href={SITE.whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-white px-8 py-4 rounded-full font-semibold text-lg hover:opacity-90 transition-opacity"
+              style={{ backgroundColor: '#25D366' }}
+            >
+              <MessageCircle size={20} />
+              Message Us on WhatsApp
+            </a>
           </div>
         </div>
       </section>
