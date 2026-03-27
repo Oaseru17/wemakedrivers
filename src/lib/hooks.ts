@@ -36,7 +36,12 @@ export function useStudents() {
     setStudents((prev) => prev.map((s) => s.id === id ? { ...s, ...updates } : s))
   }
 
-  return { students, loading, error, addStudent, updateStudent, refetch: fetchStudents }
+  const deleteStudent = async (id: string) => {
+    await api.del('/students', { id })
+    setStudents((prev) => prev.filter((s) => s.id !== id))
+  }
+
+  return { students, loading, error, addStudent, updateStudent, deleteStudent, refetch: fetchStudents }
 }
 
 // --- Bookings ---

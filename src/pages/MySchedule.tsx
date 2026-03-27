@@ -502,7 +502,7 @@ function Dashboard() {
   const weekDates = useMemo(() => getWeekDates(baseDate), [baseDate])
   const todayStr = fmt(new Date())
 
-  const { students, addStudent, updateStudent } = useStudents()
+  const { students, addStudent, updateStudent, deleteStudent } = useStudents()
   const { bookings: weekBookings, createBooking, updateBooking } = useBookings(weekDates)
   const { bookings: upcomingBookings } = useUpcomingBookings()
   const { isBlocked, toggleBlock } = useBlockedSlots(weekDates)
@@ -860,6 +860,12 @@ function Dashboard() {
                         Reactivate
                       </button>
                     )}
+                    <button
+                      onClick={() => { if (confirm(`Delete ${s.name}?`)) deleteStudent(s.id) }}
+                      className="text-xs text-red-400 hover:text-red-600 border border-red-200 px-3 py-1.5 rounded-lg"
+                    >
+                      Delete
+                    </button>
                   </div>
                 </div>
               ))}

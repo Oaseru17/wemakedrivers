@@ -27,6 +27,12 @@ export default async (req: Request, _context: Context) => {
       return new Response(JSON.stringify({ ok: true }), { headers })
     }
 
+    if (req.method === 'DELETE') {
+      const { id } = await req.json()
+      await col.deleteOne({ _id: new ObjectId(id) })
+      return new Response(JSON.stringify({ ok: true }), { headers })
+    }
+
     return new Response('Method not allowed', { status: 405 })
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Unknown error'
