@@ -74,15 +74,6 @@ function Footer() {
               </li>
               <li>
                 <a
-                  href={`tel:${SITE.phone}`}
-                  className="flex items-center gap-3 hover:text-secondary transition-colors"
-                >
-                  <Phone size={16} className="shrink-0 text-secondary" />
-                  +44 20 7946 0999
-                </a>
-              </li>
-              <li>
-                <a
                   href={`mailto:${SITE.email}`}
                   className="flex items-center gap-3 hover:text-secondary transition-colors"
                 >

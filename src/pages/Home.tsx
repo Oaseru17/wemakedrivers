@@ -213,7 +213,7 @@ function Home() {
             className="flex items-center gap-4 shrink-0"
           >
             <Phone size={28} className="text-white" />
-            <span className="text-2xl md:text-3xl font-bold text-white">1-900-333-333</span>
+            <span className="text-2xl md:text-3xl font-bold text-white">{SITE.phone}</span>
           </a>
         </div>
       </section>

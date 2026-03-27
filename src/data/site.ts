@@ -1,10 +1,10 @@
 export const SITE = {
   name: 'WeMake Drivers',
   tagline: 'Learn to Drive in London',
-  phone: '020 7946 0958',
-  email: 'hello@wemakedrivers.co.uk',
+  phone: '+44 7777 666690',
+  email: 'wemakedrivers@gmail.com',
   address: 'London, United Kingdom',
-  whatsapp: 'https://wa.me/442079460958',
+  whatsapp: 'https://wa.me/447777666690?text=Hi%2C%20I%27d%20like%20to%20book%20driving%20lessons%20in%20London.%20Can%20you%20help%3F',
   rating: 4.8,
   reviewCount: 312,
 }
