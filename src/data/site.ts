@@ -107,7 +107,7 @@ export const BLOG_POSTS = [
 ]
 
 export const TEAM = [
-  { name: 'David Apperson', role: 'Chief Instructor', image: '/images/team-1.jpg' },
+  { name: 'Shams', role: 'Chief Instructor', image: '/images/team-1.jpg' },
   { name: 'Lisa Chen', role: 'Classroom Instructor', image: '/images/team-2.jpg' },
   { name: 'Michael Brown', role: 'Driving Instructor', image: '/images/team-3.jpg' },
 ]

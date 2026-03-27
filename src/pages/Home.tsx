@@ -401,7 +401,7 @@ function Home() {
                 A Message From Your Instructor
               </span>
               <h2 className="text-3xl md:text-4xl font-bold text-primary mt-2 mb-2">
-                Hi, I'm David.
+                Hi, I'm Shams.
               </h2>
               <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
                 I'll be teaching you.
