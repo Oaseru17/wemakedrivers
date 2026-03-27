@@ -1,48 +1,48 @@
 import { useState, useEffect, useCallback } from 'react'
-import { supabase } from './supabase'
-import type { Student, Booking, BlockedSlot } from './database.types'
+import { db } from './mongodb'
+import type { Student, Booking, BlockedSlot } from './types'
 
 const fmt = (d: Date) =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+
+// --- Students ---
 
 export function useStudents() {
   const [students, setStudents] = useState<Student[]>([])
   const [loading, setLoading] = useState(true)
 
   const fetch = useCallback(async () => {
-    const { data } = await supabase
-      .from('students')
-      .select('*')
-      .order('created_at', { ascending: false })
-    if (data) setStudents(data)
+    try {
+      const { documents } = await db.find<Student>('students', {}, { created_at: -1 })
+      if (documents) setStudents(documents)
+    } catch (e) {
+      console.error('Failed to fetch students:', e)
+    }
     setLoading(false)
   }, [])
 
-  useEffect(() => {
-    fetch()
-    const channel = supabase
-      .channel('students-changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'students' }, () => fetch())
-      .subscribe()
-    return () => { supabase.removeChannel(channel) }
-  }, [fetch])
+  useEffect(() => { fetch() }, [fetch])
 
-  const addStudent = async (student: Omit<Student, 'id' | 'created_at'>) => {
-    const { data, error } = await supabase.from('students').insert(student as never).select().single()
-    if (error) throw error
-    return data
+  const addStudent = async (student: Omit<Student, '_id' | 'created_at'>) => {
+    const doc = { ...student, created_at: new Date().toISOString() }
+    const { insertedId } = await db.insertOne('students', doc)
+    const newStudent = { ...doc, _id: insertedId! } as Student
+    setStudents((prev) => [newStudent, ...prev])
+    return newStudent
   }
 
   const updateStudent = async (id: string, updates: Partial<Student>) => {
-    const { error } = await supabase.from('students').update(updates as never).eq('id', id)
-    if (error) throw error
+    await db.updateOne('students', { _id: { $oid: id } }, { $set: updates })
+    setStudents((prev) => prev.map((s) => s._id === id ? { ...s, ...updates } : s))
   }
 
   return { students, loading, addStudent, updateStudent, refetch: fetch }
 }
 
+// --- Bookings ---
+
 export function useBookings(weekDates: Date[]) {
-  const [bookings, setBookings] = useState<(Booking & { students: Student })[]>([])
+  const [bookings, setBookings] = useState<Booking[]>([])
   const [loading, setLoading] = useState(true)
 
   const startDate = weekDates.length > 0 ? fmt(weekDates[0]) : ''
@@ -50,75 +50,70 @@ export function useBookings(weekDates: Date[]) {
 
   const fetch = useCallback(async () => {
     if (!startDate || !endDate) return
-    const { data } = await supabase
-      .from('bookings')
-      .select('*, students(*)')
-      .gte('date', startDate)
-      .lte('date', endDate)
-    if (data) setBookings(data as (Booking & { students: Student })[])
+    try {
+      const { documents } = await db.find<Booking>('bookings', {
+        date: { $gte: startDate, $lte: endDate },
+      })
+      if (documents) setBookings(documents)
+    } catch (e) {
+      console.error('Failed to fetch bookings:', e)
+    }
     setLoading(false)
   }, [startDate, endDate])
 
-  useEffect(() => {
-    fetch()
-    const channel = supabase
-      .channel('bookings-changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'bookings' }, () => fetch())
-      .subscribe()
-    return () => { supabase.removeChannel(channel) }
-  }, [fetch])
+  useEffect(() => { fetch() }, [fetch])
 
   const createBooking = async (booking: {
     student_id: string
+    student_name: string
+    student_phone: string
+    student_area: string
     date: string
     hour: number
     lesson_type: string
     rate: number
   }) => {
-    const { data, error } = await supabase
-      .from('bookings')
-      .insert({ ...booking, status: 'confirmed' } as never)
-      .select('*, students(*)')
-      .single()
-    if (error) throw error
-    return data
+    const doc = { ...booking, status: 'confirmed', created_at: new Date().toISOString() }
+    const { insertedId } = await db.insertOne('bookings', doc)
+    const newBooking = { ...doc, _id: insertedId! } as Booking
+    setBookings((prev) => [...prev, newBooking])
+    return newBooking
   }
 
   const updateBooking = async (id: string, updates: { status?: string }) => {
-    const { error } = await supabase.from('bookings').update(updates as never).eq('id', id)
-    if (error) throw error
+    await db.updateOne('bookings', { _id: { $oid: id } }, { $set: updates })
+    setBookings((prev) => prev.map((b) => b._id === id ? { ...b, ...updates } as Booking : b))
   }
 
   return { bookings, loading, createBooking, updateBooking, refetch: fetch }
 }
 
+// --- Upcoming bookings ---
+
 export function useUpcomingBookings() {
-  const [bookings, setBookings] = useState<(Booking & { students: Student })[]>([])
+  const [bookings, setBookings] = useState<Booking[]>([])
 
   const fetch = useCallback(async () => {
     const today = fmt(new Date())
-    const { data } = await supabase
-      .from('bookings')
-      .select('*, students(*)')
-      .gte('date', today)
-      .eq('status', 'confirmed')
-      .order('date')
-      .order('hour')
-      .limit(8)
-    if (data) setBookings(data as (Booking & { students: Student })[])
+    try {
+      const { documents } = await db.find<Booking>(
+        'bookings',
+        { date: { $gte: today }, status: 'confirmed' },
+        { date: 1, hour: 1 },
+        8,
+      )
+      if (documents) setBookings(documents)
+    } catch (e) {
+      console.error('Failed to fetch upcoming:', e)
+    }
   }, [])
 
-  useEffect(() => {
-    fetch()
-    const channel = supabase
-      .channel('upcoming-changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'bookings' }, () => fetch())
-      .subscribe()
-    return () => { supabase.removeChannel(channel) }
-  }, [fetch])
+  useEffect(() => { fetch() }, [fetch])
 
-  return { bookings }
+  return { bookings, refetch: fetch }
 }
+
+// --- Blocked Slots ---
 
 export function useBlockedSlots(weekDates: Date[]) {
   const [blocked, setBlocked] = useState<BlockedSlot[]>([])
@@ -128,26 +123,26 @@ export function useBlockedSlots(weekDates: Date[]) {
 
   const fetch = useCallback(async () => {
     if (!startDate || !endDate) return
-    const { data } = await supabase
-      .from('blocked_slots')
-      .select('*')
-      .gte('date', startDate)
-      .lte('date', endDate)
-    if (data) setBlocked(data)
+    try {
+      const { documents } = await db.find<BlockedSlot>('blocked_slots', {
+        date: { $gte: startDate, $lte: endDate },
+      })
+      if (documents) setBlocked(documents)
+    } catch (e) {
+      console.error('Failed to fetch blocked slots:', e)
+    }
   }, [startDate, endDate])
 
-  useEffect(() => {
-    fetch()
-  }, [fetch])
+  useEffect(() => { fetch() }, [fetch])
 
   const toggleBlock = async (date: string, hour: number) => {
     const existing = blocked.find((b) => b.date === date && b.hour === hour)
     if (existing) {
-      await supabase.from('blocked_slots').delete().eq('id', existing.id)
-      setBlocked((prev) => prev.filter((b) => b.id !== existing.id))
+      await db.deleteOne('blocked_slots', { _id: { $oid: existing._id } })
+      setBlocked((prev) => prev.filter((b) => b._id !== existing._id))
     } else {
-      const { data } = await supabase.from('blocked_slots').insert({ date, hour } as never).select().single()
-      if (data) setBlocked((prev) => [...prev, data])
+      const { insertedId } = await db.insertOne('blocked_slots', { date, hour })
+      if (insertedId) setBlocked((prev) => [...prev, { _id: insertedId, date, hour }])
     }
   }
 
