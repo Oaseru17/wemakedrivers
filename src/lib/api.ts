@@ -1,8 +1,5 @@
 const BASE = '/api'
 
-export const IS_API_AVAILABLE = typeof window !== 'undefined' &&
-  (window.location.hostname !== 'localhost' || import.meta.env.VITE_USE_API === 'true')
-
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
   const res = await fetch(`${BASE}${path}`, {
     headers: { 'Content-Type': 'application/json' },
