@@ -139,6 +139,7 @@ function Home() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 bg-[#25D366] text-white px-6 py-3 font-semibold text-sm rounded-full hover:bg-[#1ebe57] transition-colors"
+                  onClick={() => trackEvent('whatsapp_click', { event_category: 'engagement', event_label: 'hero' })}
                 >
                   <MessageCircle size={18} />
                   Talk to us on WhatsApp
@@ -267,6 +268,7 @@ function Home() {
           <a
             href={`tel:${SITE.phone}`}
             className="flex items-center gap-4 shrink-0"
+            onClick={() => trackEvent('phone_click', { event_category: 'engagement', event_label: 'cta_banner' })}
           >
             <Phone size={28} className="text-white" />
             <span className="text-2xl md:text-3xl font-bold text-white">{SITE.phone}</span>

@@ -199,6 +199,7 @@ function Contact() {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-white px-8 py-4 rounded-full font-semibold text-lg hover:opacity-90 transition-opacity"
               style={{ backgroundColor: '#25D366' }}
+              onClick={() => trackEvent('whatsapp_click', { event_category: 'engagement', event_label: 'contact_page' })}
             >
               <MessageCircle size={20} />
               Message Us on WhatsApp
