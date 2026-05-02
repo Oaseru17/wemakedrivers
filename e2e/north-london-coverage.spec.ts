@@ -1,4 +1,4 @@
-import { test, expect } from 'playwright/test'
+import { test, expect } from '@playwright/test'
 
 const NORTH_LONDON_AREAS = [
   'Barnet',
