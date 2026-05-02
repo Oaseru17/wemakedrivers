@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const area = AREAS.find((a) => a.slug === slug)
   if (!area) return {}
   return {
-    title: `Driving Lessons in ${area.name} | WeMake Drivers`,
+    title: `Driving Lessons in ${area.name}`,
     description: `Looking for driving lessons in ${area.name} (${area.postcodes.join('/')})? WeMake Drivers covers ${area.name} and surrounding areas with DVSA-approved instructors. ${area.nearestTestCentre} test centre prep included. 98% first-time pass rate.`,
     alternates: { canonical: `https://wemakedrivers.co.uk/areas/${area.slug}` },
   }

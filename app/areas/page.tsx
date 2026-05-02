@@ -5,9 +5,9 @@ import PageBanner from '@/components/shared/PageBanner'
 import { AREAS } from '@/lib/areas'
 
 export const metadata: Metadata = {
-  title: 'Areas We Cover | WeMake Drivers',
+  title: 'Areas We Cover',
   description:
-    'WeMake Drivers covers 18 North London areas: Barnet, Camden, Colindale, Cricklewood, Crouch End, Edgware, Edmonton, Finchley, Golders Green, Hampstead, Hendon, Highgate, Mill Hill, Muswell Hill, Southgate, Tottenham, Walthamstow, Whetstone, Wood Green.',
+    'WeMake Drivers covers 19 North London areas: Barnet, Camden, Colindale, Cricklewood, Crouch End, Edgware, Edmonton, Finchley, Golders Green, Hampstead, Hendon, Highgate, Mill Hill, Muswell Hill, Southgate, Tottenham, Walthamstow, Whetstone, Wood Green.',
   alternates: { canonical: 'https://wemakedrivers.co.uk/areas' },
 }
 
@@ -19,7 +19,7 @@ export default function AreasIndexPage() {
       <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4">
           <p className="text-gray-500 leading-relaxed mb-12 max-w-2xl">
-            We cover 18 areas across North London. Your instructor comes to you — no commute,
+            We cover 19 areas across North London. Your instructor comes to you — no commute,
             no fuss. Choose your area below to see local routes, nearby test centres, and
             what makes driving in your neighbourhood unique.
           </p>
