@@ -3,7 +3,7 @@ import { Calendar, Tag, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import PageBanner from '@/components/shared/PageBanner'
-import { BLOG_POSTS } from '@/lib/site'
+import { BLOG_POSTS, SITE } from '@/lib/site'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -38,9 +38,30 @@ export default async function BlogPostPage({ params }: PageProps) {
   const otherPosts = BLOG_POSTS.filter((p) => p.slug !== slug)
   const categories = [...new Set(BLOG_POSTS.map((p) => p.category))]
 
+  const blogPostingSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: post.date,
+    dateModified: post.date,
+    author: { '@type': 'Organization', name: SITE.name, url: 'https://wemakedrivers.co.uk' },
+    publisher: {
+      '@type': 'Organization',
+      name: SITE.name,
+      logo: { '@type': 'ImageObject', url: 'https://wemakedrivers.co.uk/opengraph-image' },
+    },
+    mainEntityOfPage: `https://wemakedrivers.co.uk/blog/${post.slug}`,
+  }
+
   return (
     <>
       <PageBanner title={post.title} />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }}
+      />
 
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4">
