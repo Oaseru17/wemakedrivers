@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { MapPin } from 'lucide-react'
 import PageBanner from '@/components/shared/PageBanner'
 import { AREAS } from '@/lib/areas'
+import { breadcrumbsJsonLd } from '@/lib/breadcrumbs'
 
 export const metadata: Metadata = {
   title: 'Areas We Cover',
@@ -11,10 +12,20 @@ export const metadata: Metadata = {
   alternates: { canonical: 'https://wemakedrivers.co.uk/areas' },
 }
 
+const breadcrumbSchema = breadcrumbsJsonLd([
+  { name: 'Home', url: 'https://wemakedrivers.co.uk' },
+  { name: 'Areas', url: 'https://wemakedrivers.co.uk/areas' },
+])
+
 export default function AreasIndexPage() {
   return (
     <>
       <PageBanner title="Areas We Cover" breadcrumb="Areas" />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
 
       <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4">

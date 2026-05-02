@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import PageBanner from '@/components/shared/PageBanner'
 import { BLOG_POSTS, SITE } from '@/lib/site'
+import { breadcrumbsJsonLd } from '@/lib/breadcrumbs'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -54,6 +55,12 @@ export default async function BlogPostPage({ params }: PageProps) {
     mainEntityOfPage: `https://wemakedrivers.co.uk/blog/${post.slug}`,
   }
 
+  const breadcrumbSchema = breadcrumbsJsonLd([
+    { name: 'Home', url: 'https://wemakedrivers.co.uk' },
+    { name: 'Blog', url: 'https://wemakedrivers.co.uk/blog' },
+    { name: post.title, url: `https://wemakedrivers.co.uk/blog/${post.slug}` },
+  ])
+
   return (
     <>
       <PageBanner title={post.title} />
@@ -61,6 +68,10 @@ export default async function BlogPostPage({ params }: PageProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
       <section className="py-20">

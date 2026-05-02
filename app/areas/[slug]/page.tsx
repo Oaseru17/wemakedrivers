@@ -5,6 +5,7 @@ import { MapPin, Navigation, CheckCircle } from 'lucide-react'
 import PageBanner from '@/components/shared/PageBanner'
 import { AREAS } from '@/lib/areas'
 import { SITE, FEATURES, HOW_IT_WORKS } from '@/lib/site'
+import { breadcrumbsJsonLd } from '@/lib/breadcrumbs'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -46,6 +47,12 @@ export default async function AreaPage({ params }: PageProps) {
     areaServed: [area.name, ...area.nearbyAreas],
   }
 
+  const breadcrumbSchema = breadcrumbsJsonLd([
+    { name: 'Home', url: 'https://wemakedrivers.co.uk' },
+    { name: 'Areas', url: 'https://wemakedrivers.co.uk/areas' },
+    { name: area.name, url: `https://wemakedrivers.co.uk/areas/${area.slug}` },
+  ])
+
   return (
     <>
       <PageBanner title={`Driving Lessons in ${area.name}`} breadcrumb={area.name} />
@@ -53,6 +60,10 @@ export default async function AreaPage({ params }: PageProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(areaSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
       {/* Hero intro */}

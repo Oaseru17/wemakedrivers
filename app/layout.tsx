@@ -4,6 +4,7 @@ import Script from 'next/script'
 import './globals.css'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
+import WebVitals from '@/app/_components/WebVitals'
 import { SITE } from '@/lib/site'
 
 const poppins = Poppins({
@@ -93,6 +94,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main className="flex-1">{children}</main>
           <Footer />
         </div>
+
+        <WebVitals />
 
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}

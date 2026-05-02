@@ -14,6 +14,7 @@ import {
 import PageBanner from '@/components/shared/PageBanner'
 import SectionHeading from '@/components/shared/SectionHeading'
 import { STATS, FEATURES } from '@/lib/site'
+import { breadcrumbsJsonLd } from '@/lib/breadcrumbs'
 
 export const metadata: Metadata = {
   title: 'About Us',
@@ -21,6 +22,11 @@ export const metadata: Metadata = {
     'About WeMake Drivers — North London\'s trusted driving school with 15+ years experience. 5,000+ learners passed, DVSA-approved driving instructors across North London. Learn to drive with confidence.',
   alternates: { canonical: 'https://wemakedrivers.co.uk/about-us' },
 }
+
+const breadcrumbSchema = breadcrumbsJsonLd([
+  { name: 'Home', url: 'https://wemakedrivers.co.uk' },
+  { name: 'About Us', url: 'https://wemakedrivers.co.uk/about-us' },
+])
 
 const SERVICES = [
   {
@@ -76,6 +82,11 @@ export default function AboutPage() {
   return (
     <>
       <PageBanner title="About Us" />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
 
       {/* Section 1 — About Intro + Stats */}
       <section className="py-20 bg-white">
