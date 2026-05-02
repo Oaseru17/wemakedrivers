@@ -70,11 +70,8 @@ const localBusinessSchema = {
       closes: '20:00',
     },
   ],
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: SITE.rating,
-    reviewCount: SITE.reviewCount,
-  },
+  // aggregateRating intentionally omitted until real GBP/Trustpilot reviews exist —
+  // synthetic rating values violate Google's structured-data policy and risk a manual action.
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
