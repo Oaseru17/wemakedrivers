@@ -1,4 +1,4 @@
-import { test, expect } from 'playwright/test'
+import { test, expect } from '@playwright/test'
 
 test.describe('Home hero form', () => {
   test.beforeEach(async ({ page }) => {
