@@ -43,6 +43,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://wemakedrivers.co.uk',
   },
+  ...(process.env.GOOGLE_SITE_VERIFICATION
+    ? { verification: { google: process.env.GOOGLE_SITE_VERIFICATION } }
+    : {}),
 }
 
 const GA_ID = 'G-6549048JEM'
