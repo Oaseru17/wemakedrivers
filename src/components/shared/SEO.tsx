@@ -10,13 +10,13 @@ interface SEOProps {
 
 function SEO({
   title,
-  description = 'Learn to drive in London with WeMake Drivers. DVSA-approved instructors, flexible scheduling, and a 98% pass rate. Book your driving lessons today.',
+  description = 'Learn to drive in North London with WeMake Drivers. DVSA-approved instructors covering Hendon, Finchley, Golders Green and surrounding areas. 98% pass rate.',
   path = '',
   type = 'website',
 }: SEOProps) {
   const fullTitle = title
     ? `${title} | ${SITE.name}`
-    : `${SITE.name} — Learn to Drive in London`
+    : `${SITE.name} — Learn to Drive in North London`
   const url = `https://wemakedrivers.co.uk${path}`
 
   useEffect(() => {
@@ -42,7 +42,7 @@ function SEO({
     setMeta('twitter:title', fullTitle)
     setMeta('twitter:description', description)
     setMeta('robots', 'index, follow')
-    setMeta('keywords', 'driving lessons London, driving instructor London, learn to drive London, pass driving test, driving school London, automatic driving lessons, manual driving lessons, DVSA approved instructor')
+    setMeta('keywords', 'driving lessons North London, driving instructor North London, driving lessons Hendon, driving lessons Finchley, driving lessons Golders Green, learn to drive North London, automatic driving lessons, manual driving lessons, DVSA approved instructor')
 
     let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null
     if (!canonical) {

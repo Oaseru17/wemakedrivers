@@ -21,7 +21,7 @@ function Footer() {
               </span>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
-              For many years, we have been helping people of all ages learn to drive safely and confidently on London roads.
+              For many years, we have been helping people of all ages learn to drive safely and confidently on North London roads.
             </p>
             <div className="flex items-center gap-3">
               <a

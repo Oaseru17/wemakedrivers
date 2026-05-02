@@ -41,7 +41,7 @@ const AWARDS = [
     year: '2021',
     title: 'Best Driving School in London',
     description:
-      'Recognised by the Driving Instructors Association for outstanding pass rates and student satisfaction across all London boroughs.',
+      'Recognised by the Driving Instructors Association for outstanding pass rates and student satisfaction across North London.',
   },
   {
     year: '2020',
@@ -70,7 +70,7 @@ function About() {
     <>
       <SEO
         title="About Us"
-        description="About WeMake Drivers — London's trusted driving school with 15+ years experience. 5,000+ learners passed, DVSA-approved driving instructors across all London zones. Learn to drive with confidence."
+        description="About WeMake Drivers — North London's trusted driving school with 15+ years experience. 5,000+ learners passed, DVSA-approved driving instructors across North London. Learn to drive with confidence."
         path="/about-us"
       />
       <PageBanner title="About Us" />

@@ -72,7 +72,7 @@ function Contact() {
     <>
       <SEO
         title="Contact Us"
-        description="Contact WeMake Drivers to book driving lessons in London. Call, email, or WhatsApp us. DVSA-approved driving instructors covering North, South, East, West and Central London."
+        description="Contact WeMake Drivers to book driving lessons in London. Call, email, or WhatsApp us. DVSA-approved driving instructors covering North London — Hendon, Finchley, Golders Green and surrounding areas."
         path="/contact-us"
       />
       <PageBanner title="Contact Us" />
@@ -174,7 +174,7 @@ function Contact() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold mb-1">London Coverage Area</h3>
+                <h3 className="text-xl font-bold mb-1">North London Coverage Area</h3>
                 <p className="text-gray-300 text-sm">{SITE.address}</p>
               </div>
             </div>

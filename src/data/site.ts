@@ -1,10 +1,10 @@
 export const SITE = {
   name: 'WeMake Drivers',
-  tagline: 'Learn to Drive in London',
+  tagline: 'Learn to Drive in North London',
   phone: '+44 7777 666690',
   email: 'wemakedrivers@gmail.com',
-  address: 'London, United Kingdom',
-  whatsapp: 'https://wa.me/447777666690?text=Hi%2C%20I%27d%20like%20to%20book%20driving%20lessons%20in%20London.%20Can%20you%20help%3F',
+  address: 'North London, United Kingdom',
+  whatsapp: 'https://wa.me/447777666690?text=Hi%2C%20I%27d%20like%20to%20book%20driving%20lessons%20in%20North%20London.%20Can%20you%20help%3F',
   rating: 4.8,
   reviewCount: 312,
 }
@@ -143,5 +143,5 @@ export const FEATURES = [
   { title: 'DVSA-Approved Instructors', description: "Every instructor is qualified, vetted, and genuinely loves teaching people to drive." },
   { title: 'Basics to Advanced', description: "Whether you're touching a steering wheel for the first time or prepping for your test — we've got you." },
   { title: 'Test-Ready Prep', description: "Mock tests, examiner routes, and honest feedback so there are no surprises on the day." },
-  { title: 'We Come to You', description: "Wherever you are in London, your instructor picks you up. No commute, no hassle." },
+  { title: 'We Come to You', description: "Wherever you are in North London, your instructor picks you up. No commute, no hassle." },
 ]
