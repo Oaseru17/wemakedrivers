@@ -38,7 +38,7 @@ test.describe('Home hero form', () => {
     await form.locator('input[name="name"]').fill('Jane Doe')
     await form.locator('input[name="email"]').fill('jane@example.com')
     await form.locator('input[name="phone"]').fill('07700900123')
-    await form.locator('select[name="area"]').selectOption('North London')
+    await form.locator('select[name="area"]').selectOption('Hendon')
 
     await form.getByRole('button', { name: /get started/i }).click()
 
@@ -57,7 +57,7 @@ test.describe('Home hero form', () => {
     const form = page.locator('form').filter({ has: page.getByRole('button', { name: /get started/i }) })
     await form.locator('input[name="name"]').fill('Jane Doe')
     await form.locator('input[name="phone"]').fill('07700900123')
-    await form.locator('select[name="area"]').selectOption('South London')
+    await form.locator('select[name="area"]').selectOption('Finchley')
 
     await form.getByRole('button', { name: /get started/i }).click()
 
@@ -80,8 +80,8 @@ test.describe('Home hero form', () => {
     await form.locator('input[name="name"]').fill('Test User')
     await form.locator('input[name="email"]').fill('test@test.com')
     await form.locator('input[name="phone"]').fill('07700900000')
-    await form.locator('select[name="area"]').selectOption('East London')
-    await form.locator('input[name="postcode"]').fill('E1 6AN')
+    await form.locator('select[name="area"]').selectOption('Golders Green')
+    await form.locator('input[name="postcode"]').fill('NW11 8LP')
 
     await form.getByRole('button', { name: /get started/i }).click()
     await expect(page.getByText("We'll be in touch shortly")).toBeVisible()
@@ -91,8 +91,8 @@ test.describe('Home hero form', () => {
       name: 'Test User',
       email: 'test@test.com',
       phone: '07700900000',
-      area: 'East London',
-      postcode: 'E1 6AN',
+      area: 'Golders Green',
+      postcode: 'NW11 8LP',
     })
   })
 })
