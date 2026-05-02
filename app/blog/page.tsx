@@ -3,6 +3,7 @@ import { Calendar, Tag, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import PageBanner from '@/components/shared/PageBanner'
 import { BLOG_POSTS } from '@/lib/site'
+import { breadcrumbsJsonLd } from '@/lib/breadcrumbs'
 
 export const metadata: Metadata = {
   title: 'Blog',
@@ -11,10 +12,20 @@ export const metadata: Metadata = {
   alternates: { canonical: 'https://wemakedrivers.co.uk/blog' },
 }
 
+const breadcrumbSchema = breadcrumbsJsonLd([
+  { name: 'Home', url: 'https://wemakedrivers.co.uk' },
+  { name: 'Blog', url: 'https://wemakedrivers.co.uk/blog' },
+])
+
 export default function BlogPage() {
   return (
     <>
       <PageBanner title="Blog" />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
 
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4">

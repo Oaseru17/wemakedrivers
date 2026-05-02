@@ -96,6 +96,11 @@ function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/faq" className="hover:text-secondary transition-colors">
+                  FAQ
+                </Link>
+              </li>
+              <li>
                 <a href="#" className="hover:text-secondary transition-colors">
                   Privacy Policy
                 </a>

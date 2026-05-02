@@ -3,6 +3,7 @@ import { Phone, Users, MessageCircle, HeadphonesIcon } from 'lucide-react'
 import PageBanner from '@/components/shared/PageBanner'
 import { SITE } from '@/lib/site'
 import ContactForm from './_components/ContactForm'
+import { breadcrumbsJsonLd } from '@/lib/breadcrumbs'
 
 export const metadata: Metadata = {
   title: 'Contact Us',
@@ -10,6 +11,11 @@ export const metadata: Metadata = {
     'Contact WeMake Drivers to book driving lessons in North London. Call, email, or WhatsApp us. DVSA-approved driving instructors covering North London — Hendon, Finchley, Golders Green and surrounding areas.',
   alternates: { canonical: 'https://wemakedrivers.co.uk/contact-us' },
 }
+
+const breadcrumbSchema = breadcrumbsJsonLd([
+  { name: 'Home', url: 'https://wemakedrivers.co.uk' },
+  { name: 'Contact Us', url: 'https://wemakedrivers.co.uk/contact-us' },
+])
 
 const contactMethods = [
   {
@@ -42,6 +48,11 @@ export default function ContactPage() {
   return (
     <>
       <PageBanner title="Contact Us" />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
 
       {/* Contact Methods */}
       <section className="py-20 bg-light">

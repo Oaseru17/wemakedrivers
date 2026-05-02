@@ -12,13 +12,37 @@ import {
   ArrowRight,
 } from 'lucide-react'
 import PageBanner from '@/components/shared/PageBanner'
-import { COURSES } from '@/lib/site'
+import { COURSES, SITE } from '@/lib/site'
+import { AREAS } from '@/lib/areas'
+import { breadcrumbsJsonLd } from '@/lib/breadcrumbs'
 
 export const metadata: Metadata = {
   title: 'Driving Courses',
   description:
     'Driving courses in North London: automatic lessons, manual lessons, intensive crash courses, driving test preparation, Pass Plus, motorway lessons and refresher courses. DVSA-approved instructors, 98% pass rate.',
   alternates: { canonical: 'https://wemakedrivers.co.uk/courses' },
+}
+
+const breadcrumbSchema = breadcrumbsJsonLd([
+  { name: 'Home', url: 'https://wemakedrivers.co.uk' },
+  { name: 'Courses', url: 'https://wemakedrivers.co.uk/courses' },
+])
+
+const servicesGraph = {
+  '@context': 'https://schema.org',
+  '@graph': COURSES.map((course) => ({
+    '@type': 'Service',
+    name: course.title,
+    description: course.description,
+    serviceType: 'Driving instruction',
+    provider: {
+      '@type': 'DrivingSchool',
+      name: SITE.name,
+      telephone: SITE.phone,
+      url: 'https://wemakedrivers.co.uk',
+    },
+    areaServed: AREAS.map((a) => a.name),
+  })),
 }
 
 const ICON_MAP: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
@@ -42,6 +66,15 @@ export default function CoursesPage() {
   return (
     <>
       <PageBanner title="Courses" />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesGraph) }}
+      />
 
       <section className="py-20 bg-light">
         <div className="max-w-7xl mx-auto px-4">
