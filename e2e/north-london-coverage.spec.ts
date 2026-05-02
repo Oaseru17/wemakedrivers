@@ -58,15 +58,18 @@ test.describe('North London coverage scope', () => {
     }
   })
 
-  test('"Areas We Cover" grid renders all 18 alphabetised areas', async ({ page }) => {
+  test('"Areas We Cover" grid renders all 18 alphabetised areas as links', async ({ page }) => {
     const eyebrow = page.getByText('Areas We Cover', { exact: true })
     await expect(eyebrow).toBeVisible()
     const section = eyebrow.locator('xpath=ancestor::section[1]')
-    const tiles = section.locator('div.grid.grid-cols-2 > div')
+    const tiles = section.locator('div.grid.grid-cols-2 > a')
     await expect(tiles).toHaveCount(NORTH_LONDON_AREAS.length)
-    const tileTexts = await tiles.allTextContents()
-    const cleaned = tileTexts.map((t) => t.trim())
-    expect(cleaned).toEqual(NORTH_LONDON_AREAS)
+    for (const area of NORTH_LONDON_AREAS) {
+      const tile = tiles.filter({ hasText: area })
+      await expect(tile).toBeVisible()
+      const href = await tile.getAttribute('href')
+      expect(href).toMatch(/^\/areas\//)
+    }
   })
 
   test('map badge shows "North London" not generic "London"', async ({ page }) => {

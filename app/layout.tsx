@@ -14,6 +14,7 @@ const poppins = Poppins({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://wemakedrivers.co.uk'),
   title: {
     default: `${SITE.name} — Learn to Drive in North London`,
     template: `%s | ${SITE.name}`,
@@ -28,12 +29,14 @@ export const metadata: Metadata = {
     description:
       'DVSA-approved driving instructors in North London with a 98% first-time pass rate. Book automatic or manual lessons today.',
     url: 'https://wemakedrivers.co.uk',
+    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: 'WeMake Drivers — Learn to Drive in North London' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: `${SITE.name} — Learn to Drive in North London`,
     description:
       'DVSA-approved driving instructors in North London with a 98% first-time pass rate.',
+    images: [{ url: '/twitter-image', width: 1200, height: 630, alt: 'WeMake Drivers — Learn to Drive in North London' }],
   },
   robots: { index: true, follow: true },
   alternates: {

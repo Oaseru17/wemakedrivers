@@ -26,6 +26,7 @@ import {
 } from 'lucide-react'
 import SectionHeading from '@/components/shared/SectionHeading'
 import { SITE, COURSES, TESTIMONIALS, BLOG_POSTS, HOW_IT_WORKS, FEATURES } from '@/lib/site'
+import { AREAS } from '@/lib/areas'
 import HeroForm from '@/app/_components/HeroForm'
 
 export const metadata: Metadata = {
@@ -347,22 +348,15 @@ export default function HomePage() {
               </p>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8">
-                {[
-                  'Barnet', 'Camden', 'Colindale',
-                  'Cricklewood', 'Crouch End', 'Edgware',
-                  'Edmonton', 'Finchley', 'Golders Green',
-                  'Hampstead', 'Hendon', 'Highgate',
-                  'Mill Hill', 'Muswell Hill', 'Southgate',
-                  'Tottenham', 'Walthamstow', 'Whetstone',
-                  'Wood Green',
-                ].map((area) => (
-                  <div
-                    key={area}
-                    className="flex items-center gap-2 bg-white/10 rounded-lg px-3 py-2 text-sm text-white/90"
+                {AREAS.map((area) => (
+                  <Link
+                    key={area.slug}
+                    href={`/areas/${area.slug}`}
+                    className="flex items-center gap-2 bg-white/10 rounded-lg px-3 py-2 text-sm text-white/90 hover:bg-white/20 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-1 focus:ring-offset-accent"
                   >
                     <MapPin size={14} className="text-secondary shrink-0" />
-                    {area}
-                  </div>
+                    {area.name}
+                  </Link>
                 ))}
               </div>
 

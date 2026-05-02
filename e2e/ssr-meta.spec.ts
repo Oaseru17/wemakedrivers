@@ -20,4 +20,11 @@ test.describe('SSR meta tags — pre-rendered HTML before JS', () => {
       expect(html).toMatch(/<title[^>]*>[^<]+<\/title>/si)
     }
   })
+
+  test('blog post /blog/london-driving-guide HTML contains BlogPosting JSON-LD', async ({ request }) => {
+    const response = await request.fetch('/blog/london-driving-guide')
+    expect(response.status()).toBe(200)
+    const html = await response.text()
+    expect(html).toContain('"BlogPosting"')
+  })
 })
