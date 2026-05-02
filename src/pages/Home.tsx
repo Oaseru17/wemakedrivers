@@ -104,7 +104,7 @@ function Home() {
   return (
     <main>
       <SEO
-        description="Looking for driving lessons in London? WeMake Drivers offers DVSA-approved driving instructors with a 98% first-time pass rate. Book automatic or manual driving lessons across all London zones. Pass your driving test with confidence."
+        description="Looking for driving lessons in North London? WeMake Drivers offers DVSA-approved driving instructors with a 98% first-time pass rate. Book automatic or manual driving lessons across North London. Pass your driving test with confidence."
         path="/"
       />
       {/* Section 1 — Hero */}
@@ -179,19 +179,25 @@ function Home() {
                     required
                   >
                     <option value="" disabled>Select your area*</option>
-                    <option value="North London">North London</option>
-                    <option value="South London">South London</option>
-                    <option value="East London">East London</option>
-                    <option value="West London">West London</option>
-                    <option value="Central London">Central London</option>
-                    <option value="Croydon">Croydon</option>
-                    <option value="Enfield">Enfield</option>
-                    <option value="Bromley">Bromley</option>
-                    <option value="Greenwich / Lewisham">Greenwich / Lewisham</option>
-                    <option value="Islington / Camden">Islington / Camden</option>
-                    <option value="Wandsworth">Wandsworth</option>
-                    <option value="Barnet / Harrow">Barnet / Harrow</option>
-                    <option value="Other">Other (enter postcode below)</option>
+                    <option value="Barnet">Barnet</option>
+                    <option value="Camden">Camden</option>
+                    <option value="Colindale">Colindale</option>
+                    <option value="Cricklewood">Cricklewood</option>
+                    <option value="Crouch End">Crouch End</option>
+                    <option value="Edgware">Edgware</option>
+                    <option value="Edmonton">Edmonton</option>
+                    <option value="Finchley">Finchley</option>
+                    <option value="Golders Green">Golders Green</option>
+                    <option value="Hampstead">Hampstead</option>
+                    <option value="Hendon">Hendon</option>
+                    <option value="Highgate">Highgate</option>
+                    <option value="Mill Hill">Mill Hill</option>
+                    <option value="Muswell Hill">Muswell Hill</option>
+                    <option value="Southgate">Southgate</option>
+                    <option value="Tottenham">Tottenham</option>
+                    <option value="Walthamstow">Walthamstow</option>
+                    <option value="Whetstone">Whetstone</option>
+                    <option value="Wood Green">Wood Green</option>
                   </select>
                   <input
                     name="postcode"
@@ -413,7 +419,7 @@ function Home() {
                 Whether you're nervous, excited, or somewhere in between — I'll meet you where
                 you are. My job isn't just to get you through the test. It's to make sure you
                 feel genuinely confident every time you sit behind the wheel. I cover all of
-                London, so wherever you are, I'll come to you.
+                North London, so wherever you are, I'll come to you.
               </p>
               <div className="space-y-4">
                 <a
@@ -455,11 +461,13 @@ function Home() {
 
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8">
                 {[
-                  'North London', 'South London', 'East London',
-                  'West London', 'Central London', 'Croydon',
-                  'Barnet', 'Enfield', 'Bromley',
-                  'Greenwich', 'Hackney', 'Lewisham',
-                  'Islington', 'Camden', 'Wandsworth',
+                  'Barnet', 'Camden', 'Colindale',
+                  'Cricklewood', 'Crouch End', 'Edgware',
+                  'Edmonton', 'Finchley', 'Golders Green',
+                  'Hampstead', 'Hendon', 'Highgate',
+                  'Mill Hill', 'Muswell Hill', 'Southgate',
+                  'Tottenham', 'Walthamstow', 'Whetstone',
+                  'Wood Green',
                 ].map((area) => (
                   <div
                     key={area}
@@ -485,8 +493,8 @@ function Home() {
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
                     <Map size={48} className="text-secondary mx-auto mb-3" />
-                    <p className="text-white font-bold text-xl">London</p>
-                    <p className="text-gray-400 text-sm">All Zones Covered</p>
+                    <p className="text-white font-bold text-xl">North London</p>
+                    <p className="text-gray-400 text-sm">All Areas Covered</p>
                   </div>
                 </div>
                 {/* Pins around the circle */}
