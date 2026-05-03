@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { MapPin, Navigation, CheckCircle } from 'lucide-react'
+import { MapPin, Navigation, CheckCircle, MessageSquare, Phone, MessageCircle } from 'lucide-react'
 import PageBanner from '@/components/shared/PageBanner'
 import { AREAS } from '@/lib/areas'
 import { SITE, FEATURES, HOW_IT_WORKS } from '@/lib/site'
@@ -172,19 +172,40 @@ export default async function AreaPage({ params }: PageProps) {
 
       {/* CTA */}
       <section className="bg-secondary py-16">
-        <div className="max-w-7xl mx-auto px-4 text-center">
+        <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Ready to start in {area.name}?
           </h2>
           <p className="text-white/80 text-lg mb-8">
-            Book your first lesson today — your instructor comes to you.
+            Book your first lesson today — your instructor comes to you. Pick the contact method that suits you best.
           </p>
-          <Link
-            href="/contact-us"
-            className="inline-block bg-white text-secondary font-bold px-8 py-3 rounded-full hover:bg-gray-100 transition-colors"
-          >
-            Book a Lesson
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-stretch sm:items-center">
+            <Link
+              href="/contact-us"
+              className="inline-flex items-center justify-center gap-2 bg-white text-secondary font-bold px-6 py-3 rounded-full hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-secondary"
+            >
+              <MessageSquare size={18} />
+              Contact Us Now
+            </Link>
+            <a
+              href="tel:+447777666690"
+              aria-label={`Call WeMake Drivers to book lessons in ${area.name}`}
+              className="inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-full hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-secondary"
+            >
+              <Phone size={18} />
+              Book Now
+            </a>
+            <a
+              href={`https://wa.me/447777666690?text=${encodeURIComponent(`Hi, I'd like to book driving lessons in ${area.name}. Can you help?`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Message WeMake Drivers on WhatsApp to book lessons in ${area.name}`}
+              className="inline-flex items-center justify-center gap-2 bg-[#25D366] text-white font-bold px-6 py-3 rounded-full hover:bg-[#20bd5a] transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-secondary"
+            >
+              <MessageCircle size={18} />
+              WhatsApp
+            </a>
+          </div>
         </div>
       </section>
     </>
